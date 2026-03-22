@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Results (large files)
+results/image/**
+results/language/**
+results/figures/**
+!results/.gitkeep
+!results/image/.gitkeep
+!results/language/.gitkeep
+!results/figures/.gitkeep
+
+# Datasets (downloaded)
+data/
+datasets_cache/
+
+# Weights & Biases
+wandb/
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Secrets
+.env
