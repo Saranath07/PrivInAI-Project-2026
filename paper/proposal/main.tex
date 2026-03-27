@@ -1,0 +1,165 @@
+\documentclass{article}
+
+\usepackage[preprint]{neurips_2025}
+
+% Override the footer — this is a course project, not a NeurIPS submission
+\makeatletter
+\renewcommand{\@noticestring}{DA5001 --- Privacy in AI Course Project Proposal --- IIT Madras.}
+\makeatother
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\title{DP-ShiftBench: How Distribution Shift Governs the Value of Pretraining for Private Learning}
+
+\author{
+  Saranath P \\
+  Department of Data Science and AI\\
+  IIT Madras\\
+  \texttt{da25s014@smail.iitm.ac.in} \\
+  \And
+  Mayank Sharma \\
+  Department of Electrical Engineering\\
+  IIT Madras\\
+  \texttt{ee23b045@smail.iitm.ac.in} \\
+  \And
+  Aniruddh Krishna \\
+  Department of Naval Architecture\\
+  IIT Madras\\
+  \texttt{na23b022@smail.iitm.ac.in} \\
+}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================================
+% SECTION 1: INTRODUCTION + PROBLEM STATEMENT
+% ============================================================================
+\section{Introduction}
+
+% Cite keys for quick reference while writing:
+% Pretraining helps DP: \cite{li2022large, ganesh2023why, de2022unlocking, tramer2021differentially}
+% Shift + DP theory: \cite{bassily2023dp, setlur2025lower, bendavid2010theory}
+% Measuring gap: \cite{pillutla2021mauve, pillutla2023mauve}
+% Datasets: \cite{netzer2011svhn}  DP-SGD: \cite{abadi2016deep}
+
+Pretraining on public data followed by finetuning with DP-SGD on private data has become the dominant paradigm for private learning, yielding large accuracy gains over training from scratch \cite{li2022large, ganesh2023why, de2022unlocking}. However, in practice the public and private distributions rarely match---e.g., pretraining on web images but finetuning on medical scans. The effect of this distribution shift on the privacy-utility tradeoff remains poorly understood: does shift add to the privacy cost independently \cite{bassily2023dp}, amplify it multiplicatively, or is there a critical threshold beyond which public data stops helping \cite{setlur2025lower}?
+
+We propose \textbf{DP-ShiftBench}, a controlled benchmark where distribution shift is a \emph{continuous, tunable parameter}. It features two tracks---images (SVHN$\rightarrow$MNIST) and language (controlled Markov chains)---each evaluated across $\varepsilon \in \{0.5, 1, 2, 4, 8, \infty\}$ with $\delta = 10^{-5}$. Our contributions: (1)~a reusable benchmark with fine-grained shift control, (2)~an evaluation of which divergence metrics (FID, KL, MAUVE \cite{pillutla2023mauve}) best predict DP degradation under shift, and (3)~an empirical test of additive vs.\ multiplicative vs.\ threshold interaction models.
+
+% ============================================================================
+% SECTION 2: PROPOSED APPROACH
+% ============================================================================
+\section{Proposed Approach}
+
+% Brief 1-2 sentence lead-in (don't repeat the intro)
+In both tracks, we pretrain on public data and finetune with DP-SGD \cite{abadi2016deep} on private data, sweeping $\varepsilon \in \{0.5, 1, 2, 4, 8, \infty\}$ ($\delta=10^{-5}$). For each (pretrain, finetune) pair we compute divergence metrics and correlate them with DP finetuning accuracy.
+
+% ----------------------------------------------------------------------------
+\subsection{Image Track: SVHN $\rightarrow$ MNIST}
+% ----------------------------------------------------------------------------
+
+
+% TODO [YOUR PART]: ~1/3 page — the table + a short paragraph is enough
+
+We pretrain on SVHN \cite{netzer2011svhn} (32$\times$32 color digit images) and finetune with DP-SGD on MNIST. To handle the format mismatch, MNIST images are resized to 32$\times$32 and replicated to 3 channels. We use a SmallCNN (${\sim}$500K params) with GroupNorm (required for Opacus compatibility). Table~\ref{tab:image-experiments} summarizes the experiments: we control shift via class-subset matching (pretrain on digits \{0--4\} vs.\ \{5--9\}) and pretraining objective (supervised vs.\ autoencoder). For each pair, we compute FID and proxy $\mathcal{A}$-distance \cite{bendavid2010theory} to quantify the shift magnitude.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Experiment} & \textbf{Pretrain} & \textbf{Finetune (DP)} & \textbf{Shift Type} \\
+\midrule
+Baseline    & None           & MNIST         & No pretrain \\
+Full shift  & SVHN (full)    & MNIST         & Domain gap \\
+Matched     & SVHN \{0--4\}  & MNIST \{0--4\} & Domain only \\
+Mismatched  & SVHN \{5--9\}  & MNIST \{0--4\} & Domain + label \\
+Unsupervised & SVHN (autoenc.) & MNIST        & Task gap \\
+\bottomrule
+\end{tabular}
+\caption{Image track experiments. Each run across $\varepsilon \in \{0.5, 1, 2, 4, 8, \infty\}$.}
+\label{tab:image-experiments}
+\end{table}
+
+
+% ----------------------------------------------------------------------------
+\subsection{Language Track: Controlled Markov Chains}
+% ----------------------------------------------------------------------------
+
+% TODO [TEAMMATE]: Write this subsection (~1/3 page)
+% Cover:
+%   - Markov chain distributions with tunable shift parameter alpha
+%   - P2(alpha) = (1-alpha)*P1 + alpha*P_uniform
+%   - Exact KL divergence computation (no estimation needed)
+%   - Alpha grid: {0.0, 0.1, 0.3, 0.5, 0.7, 1.0}
+%   - Model: small LSTM, same epsilon grid
+%   - References: MAUVE [10, 11], Sakarvadia et al. [24]
+
+% --- TEAMMATE'S LANGUAGE TRACK TEXT GOES HERE ---
+
+
+% ----------------------------------------------------------------------------
+\subsection{Analysis: Divergence Metrics and Interaction Hypotheses}
+% ----------------------------------------------------------------------------
+
+% TODO [TEAMMATE / JOINT]: Write this subsection (~1/3 page)
+% Cover:
+%   - For each (pretrain, finetune) pair, compute divergence metrics:
+%     FID (images), KL/JSD/TV (exact for Markov), MAUVE (language), proxy A-distance (both)
+%   - Correlate divergence with DP finetuning accuracy
+%   - Test three hypotheses:
+%     H_additive:       Error = C1/eps + C2*d + C3        (Bassily et al. 2023)
+%     H_multiplicative: Error = C1*d/eps + C2             (open question)
+%     H_threshold:      Goldilocks zone with critical d*  (Setlur et al. 2025)
+%   - Model comparison via AIC/BIC
+%   - 2D grid: epsilon x shift_level, 3 seeds each
+
+% --- ANALYSIS TEXT GOES HERE ---
+
+
+% ============================================================================
+% SECTION 3: RELEVANT LITERATURE
+% ============================================================================
+\section{Relevant Literature}
+
+% TODO: Write this section (~0.5 page)
+% Organize by theme:
+%
+% (a) Why pretraining helps DP:
+%     - Li et al. 2022 \cite{li2022large}
+%     - Ganesh et al. 2023 \cite{ganesh2023why}
+%     - De et al. 2022 \cite{de2022unlocking}
+%     - Tramer & Boneh 2021 \cite{tramer2021differentially}
+%
+% (b) Distribution shift + DP theory:
+%     - Bassily et al. 2023 \cite{bassily2023dp}
+%     - Setlur et al. 2025 \cite{setlur2025lower}
+%     - Ben-David et al. 2010 \cite{bendavid2010theory}
+%
+% (c) Measuring distribution gap:
+%     - Pillutla et al. 2021, 2023 (MAUVE) \cite{pillutla2021mauve, pillutla2023mauve}
+%
+% (d) Datasets:
+%     - Netzer et al. 2011 (SVHN) \cite{netzer2011svhn}
+
+% --- YOUR LITERATURE TEXT GOES HERE ---
+
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

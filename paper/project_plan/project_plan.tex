@@ -1,0 +1,698 @@
+\documentclass[11pt,a4paper]{article}
+
+% ─── Packages ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{forest}
+\usepackage{multicol}
+\usepackage{tabularx}
+
+% ─── Colors ──────────────────────────────────────────────────────────────────
+\definecolor{linkblue}{HTML}{0366D6}
+\definecolor{codebg}{HTML}{F6F8FA}
+\definecolor{codeframe}{HTML}{D0D7DE}
+\definecolor{p0color}{HTML}{D73A49}
+\definecolor{p1color}{HTML}{E36209}
+\definecolor{p2color}{HTML}{6F42C1}
+\definecolor{sectioncolor}{HTML}{24292F}
+\definecolor{accentblue}{HTML}{0969DA}
+
+% ─── Hyperref Setup ──────────────────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    urlcolor=linkblue,
+    citecolor=linkblue,
+    pdfauthor={PrivAI 2026 Team},
+    pdftitle={DP-ShiftBench: Project Plan},
+}
+
+% ─── Code Listing Style ─────────────────────────────────────────────────────
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{codeframe},
+    xleftmargin=1em,
+    framexleftmargin=0.5em,
+    tabsize=4,
+    showstringspaces=false,
+}
+
+% ─── Section Formatting ─────────────────────────────────────────────────────
+\titleformat{\section}
+    {\Large\bfseries\color{sectioncolor}}
+    {\thesection}{1em}{}[\vspace{-0.5em}\rule{\textwidth}{0.4pt}]
+\titleformat{\subsection}
+    {\large\bfseries\color{sectioncolor}}
+    {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+    {\normalsize\bfseries\color{sectioncolor}}
+    {\thesubsubsection}{1em}{}
+
+% ─── Header / Footer ────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gray}{DP-ShiftBench --- Project Plan}}
+\fancyhead[R]{\small\textcolor{gray}{PrivAI 2026}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─── Custom Environments ────────────────────────────────────────────────────
+\newtcolorbox{thesisbox}{
+    colback=accentblue!5,
+    colframe=accentblue!60,
+    arc=3pt,
+    boxrule=1pt,
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    fontupper=\itshape
+}
+
+\newcommand{\priority}[1]{%
+    \ifx#1P\def\temparg{#1}\fi
+    \textbf{#1}%
+}
+
+\newcommand{\ptag}[1]{%
+    \ifnum\pdfstrcmp{#1}{P0}=0
+        {\textcolor{p0color}{\textbf{P0}}}%
+    \else\ifnum\pdfstrcmp{#1}{P1}=0
+        {\textcolor{p1color}{\textbf{P1}}}%
+    \else
+        {\textcolor{p2color}{\textbf{P2}}}%
+    \fi\fi
+}
+
+% ─── Document ────────────────────────────────────────────────────────────────
+\begin{document}
+
+% ─── Title Page ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries DP-ShiftBench}\\[0.5cm]
+{\LARGE How Distribution Shift Governs\\the Value of Pretraining\\for Private Learning}\\[2cm]
+
+{\Large\textbf{Project Plan}}\\[1cm]
+
+\rule{0.6\textwidth}{0.5pt}\\[1cm]
+
+{\large
+\textbf{Course:} PrivAI 2026 (IIT Madras)\\[0.3cm]
+\textbf{Instructor:} Krishna Pillutla\\[0.3cm]
+\textbf{Problem Statement:} 1.6 --- The Effect of Distribution Shifts\\on Pretraining for Private Learning\\[0.3cm]
+\textbf{Project Type:} Original empirical research (with theoretical validation)\\[0.3cm]
+\textbf{Target:} Workshop paper at NeurIPS 2026\\(Privacy in ML / Distribution Shift workshops)
+}
+
+\vfill
+
+{\large March 2026}
+
+\end{titlepage}
+
+% ─── Table of Contents ───────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Key Dates}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Milestone} & \textbf{Date} & \textbf{Status} \\
+\midrule
+Project Proposal (2 pages, NeurIPS format) & March 27, 2026 & \texttt{TODO} \\
+Mid-Review Report (4 pages) & April 17, 2026 & \texttt{TODO} \\
+Project Presentation & April 29 -- May 4, 2026 & \texttt{TODO} \\
+Final Report (9 pages) & May 11, 2026 & \texttt{TODO} \\
+\bottomrule
+\end{tabular}
+\caption{Project milestones and deadlines.}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Paper Thesis}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{thesisbox}
+When a model is pretrained on public data and finetuned with DP on private data, how does the distribution shift between these two datasets affect the privacy-utility tradeoff? We build a controlled benchmark (\textbf{DP-ShiftBench}), discover which divergence metrics predict DP degradation, and empirically test whether the interaction between shift and privacy is additive or multiplicative.
+\end{thesisbox}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Three Core Contributions}
+% ══════════════════════════════════════════════════════════════════════════════
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Contribution 1: DP-ShiftBench --- A Controlled Benchmark Suite}
+% ──────────────────────────────────────────────────────────────────────────────
+
+A reusable, open-source benchmark where distribution shift is a \textbf{continuous, tunable knob}.
+
+\subsubsection{1A. Image Track: SVHN $\rightarrow$ MNIST}
+
+\begin{small}
+\begin{longtable}{@{}p{1.2cm}p{2.5cm}p{2.2cm}p{2.3cm}p{3cm}p{0.6cm}@{}}
+\toprule
+\textbf{Exp.\ ID} & \textbf{Pretrain Data} & \textbf{Pretrain Method} & \textbf{Finetune Data (DP)} & \textbf{Shift Control Knob} & \textbf{Pri.} \\
+\midrule
+\endhead
+\texttt{IMG-00} & None (random init) & --- & MNIST full & Baseline (no pretrain) & \ptag{P0} \\
+\texttt{IMG-01} & SVHN full & Supervised & MNIST full & Full domain gap & \ptag{P0} \\
+\texttt{IMG-02} & SVHN digits \{0--4\} & Supervised & MNIST digits \{0--4\} & Matched class subset & \ptag{P0} \\
+\texttt{IMG-03} & SVHN digits \{5--9\} & Supervised & MNIST digits \{0--4\} & Mismatched class subset & \ptag{P0} \\
+\texttt{IMG-04} & SVHN full & Autoencoder & MNIST full & Task gap & \ptag{P1} \\
+\texttt{IMG-05} & SVHN 10\% & Supervised & MNIST full & Data scarcity & \ptag{P1} \\
+\texttt{IMG-06} & SVHN 25\% & Supervised & MNIST full & Data scarcity & \ptag{P1} \\
+\texttt{IMG-07} & SVHN 50\% & Supervised & MNIST full & Data scarcity & \ptag{P1} \\
+\texttt{IMG-08} & CIFAR-10 & Supervised & MNIST full & Larger domain gap & \ptag{P1} \\
+\texttt{IMG-09} & SVHN + aug. & Supervised & MNIST full & Style shift & \ptag{P2} \\
+\texttt{IMG-10} & FashionMNIST & Supervised & MNIST full & Same format, diff.\ semantics & \ptag{P2} \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\textbf{Model:} ResNet-18 (or small CNN with ${\sim}500$K parameters for faster iteration).
+
+\paragraph{DP Settings for each experiment:}
+\begin{itemize}[nosep]
+    \item $\varepsilon \in \{0.5,\ 1.0,\ 2.0,\ 4.0,\ 8.0,\ \infty\ \text{(non-private)}\}$
+    \item $\delta = 10^{-5}$
+    \item Clipping norm $C \in \{0.1,\ 1.0\}$ (pick best after initial sweep)
+    \item Batch size: 256 (with gradient accumulation if needed)
+    \item Epochs: 10--20 for finetuning
+\end{itemize}
+
+\subsubsection{1B. Language Track: Controlled Markov Chains}
+
+\begin{small}
+\begin{longtable}{@{}p{1.2cm}p{2.8cm}p{3.5cm}p{2.5cm}p{0.6cm}@{}}
+\toprule
+\textbf{Exp.\ ID} & \textbf{Pretrain Distribution} & \textbf{Finetune Distribution (DP)} & \textbf{Shift Control Knob} & \textbf{Pri.} \\
+\midrule
+\endhead
+\texttt{LANG-00} & None & Markov($P_1$) & Baseline & \ptag{P0} \\
+\texttt{LANG-01} & Markov($P_1$) & Markov($P_1$) & Zero shift & \ptag{P0} \\
+\texttt{LANG-02} & Markov($P_1$) & Markov($0.9 P_1 + 0.1 P_u$) & $\alpha=0.1$ & \ptag{P0} \\
+\texttt{LANG-03} & Markov($P_1$) & Markov($0.7 P_1 + 0.3 P_u$) & $\alpha=0.3$ & \ptag{P0} \\
+\texttt{LANG-04} & Markov($P_1$) & Markov($0.5 P_1 + 0.5 P_u$) & $\alpha=0.5$ & \ptag{P0} \\
+\texttt{LANG-05} & Markov($P_1$) & Markov($0.3 P_1 + 0.7 P_u$) & $\alpha=0.7$ & \ptag{P0} \\
+\texttt{LANG-06} & Markov($P_1$) & Markov($P_2$), independent & $\alpha=1.0$ (max shift) & \ptag{P0} \\
+\texttt{LANG-07} & Small Transformer & Small Transformer (DP) & Real distribution shift & \ptag{P1} \\
+\texttt{LANG-08} & GPT-2 small & GPT-2 small (DP) & Real domain shift & \ptag{P2} \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\paragraph{Markov Chain Details:}
+\begin{itemize}[nosep]
+    \item Vocabulary size: 100 tokens
+    \item Order: $k=3$ (start), then $k=4$, $k=5$
+    \item Transition probabilities $P_1$: randomly generated, then fixed
+    \item Shift control: $P_2(\alpha) = (1-\alpha)\,P_1 + \alpha\,P_{\text{uniform}}$
+    \item This gives \textbf{exact} KL divergence computation (no estimation needed)
+    \item Train a small LSTM or Transformer on sequences from these chains
+\end{itemize}
+
+\textbf{Model:} 2-layer LSTM (for Markov) or GPT-2 small (for real text).
+
+\textbf{DP Settings:} Same $\varepsilon$ grid as the image track.
+
+\subsubsection{1C. Benchmark Package Design}
+
+\begin{lstlisting}
+dp_shift_bench/
+    __init__.py
+    datasets/
+        image_shifts.py      # SVHN/MNIST/CIFAR shift generators
+        markov_chains.py     # Controllable Markov chain distributions
+        text_shifts.py       # Real text domain shift loaders
+    models/
+        image_models.py      # ResNet-18, SmallCNN
+        language_models.py   # LSTM, small Transformer
+    training/
+        dp_trainer.py        # Unified DP-SGD training loop (Opacus)
+        standard_trainer.py  # Non-private pretraining loop
+    metrics/
+        divergences.py       # All divergence measures
+        evaluation.py        # Accuracy, perplexity, etc.
+    configs/
+        image_experiments.yaml
+        language_experiments.yaml
+    runners/
+        run_experiment.py    # Single experiment runner
+        run_sweep.py         # Full grid sweep
+\end{lstlisting}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Contribution 2: Divergence-as-Predictor Analysis}
+% ──────────────────────────────────────────────────────────────────────────────
+
+For \textbf{every} experiment, compute multiple divergence measures between pretrain and finetune data, then analyze which metric best predicts the DP finetuning performance.
+
+\subsubsection{Divergence Metrics to Compute}
+
+\begin{small}
+\begin{longtable}{@{}p{3.2cm}p{3.8cm}p{2.5cm}p{0.6cm}@{}}
+\toprule
+\textbf{Metric} & \textbf{Implementation} & \textbf{Works For} & \textbf{Pri.} \\
+\midrule
+\endhead
+KL Divergence & Exact (Markov), \texttt{scipy} est.\ (neural) & Language (exact), Images (est.) & \ptag{P0} \\
+Reverse KL & Same as above & Both & \ptag{P0} \\
+Jensen--Shannon Div. & \texttt{scipy} & Both & \ptag{P0} \\
+Total Variation & Exact (Markov), est.\ (neural) & Both & \ptag{P0} \\
+MAUVE Score & \texttt{mauve-text} (Pillutla et al.) & Language & \ptag{P0} \\
+FID & \texttt{clean-fid} & Images & \ptag{P0} \\
+MMD (RBF kernel) & Custom implementation & Both & \ptag{P1} \\
+Proxy $\mathcal{A}$-distance & Domain classifier, $2(1-2\epsilon)$ & Both & \ptag{P1} \\
+Wasserstein Distance & \texttt{POT} library & Both & \ptag{P1} \\
+CKA & Custom (repr.\ similarity) & Both & \ptag{P2} \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsubsection{Analysis Plan}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Correlation analysis:} For each metric, compute Pearson/Spearman correlation with DP test accuracy across all experiments.
+    \item \textbf{Predictive modeling:} Fit $\text{accuracy}(\varepsilon, d) = f(\varepsilon, d)$ where $d$ is the divergence.
+    \item \textbf{Rank the metrics:} Which metric has the highest predictive power?
+    \item \textbf{Cross-domain validation:} Does the best predictor on images also work for language?
+\end{enumerate}
+
+\subsubsection{Key Plots}
+
+\begin{itemize}[nosep]
+    \item \textbf{Scatter plot:} Divergence metric ($x$) vs.\ DP accuracy ($y$), colored by $\varepsilon$ --- one plot per metric
+    \item \textbf{Correlation heatmap:} Metrics $\times$ Epsilons, showing $R^2$ values
+    \item \textbf{Radar chart:} Comparing predictive power across all metrics
+\end{itemize}
+
+% ──────────────────────────────────────────────────────────────────────────────
+\subsection{Contribution 3: Additive vs.\ Multiplicative Interaction}
+% ──────────────────────────────────────────────────────────────────────────────
+
+\subsubsection{The Competing Hypotheses}
+
+\paragraph{$H_{\text{additive}}$ (current theory --- Bassily et al.\ 2023):}
+\begin{equation}
+    \text{Error}(\varepsilon, d) = C_1 \cdot \frac{1}{\varepsilon} + C_2 \cdot d + C_3
+    \label{eq:additive}
+\end{equation}
+The DP cost ($1/\varepsilon$) and domain shift cost ($d$) contribute independently.
+
+\paragraph{$H_{\text{multiplicative}}$ (open question):}
+\begin{equation}
+    \text{Error}(\varepsilon, d) = C_1 \cdot \frac{d}{\varepsilon} + C_2
+    \label{eq:multiplicative}
+\end{equation}
+Distribution shift \textbf{amplifies} the privacy cost --- more shift means you need even more privacy budget.
+
+\paragraph{$H_{\text{threshold}}$ (Setlur et al.\ 2025 ``Goldilocks zone''):}
+\begin{equation}
+    \text{Error}(\varepsilon, d) =
+    \begin{cases}
+        C_1/\varepsilon + C_2 \cdot d & \text{if } d < d_{\text{threshold}} \\
+        C_1/\varepsilon + C_3 & \text{if } d \geq d_{\text{threshold}}\ \text{(pretrain useless)}
+    \end{cases}
+    \label{eq:threshold}
+\end{equation}
+There is a critical shift threshold beyond which public data stops helping.
+
+\subsubsection{Experimental Design}
+
+Run a \textbf{full 2D grid}:
+\begin{itemize}[nosep]
+    \item $\varepsilon \in \{0.5,\ 1.0,\ 2.0,\ 4.0,\ 8.0,\ \infty\}$
+    \item $\text{shift\_level} \in \{0.0,\ 0.1,\ 0.2,\ 0.3,\ 0.5,\ 0.7,\ 1.0\}$ (for Markov: $\alpha$ parameter)
+\end{itemize}
+
+This gives a $6 \times 7 = 42$ cell grid. Each cell is repeated 3 times for error bars.\\
+\textbf{Total:} 126 runs for language, 126 for images.
+
+\subsubsection{Analysis Plan}
+
+\begin{enumerate}[nosep]
+    \item \textbf{3D surface plot:} $\text{accuracy}(\varepsilon, \text{shift})$ --- the ``hero figure''
+    \item \textbf{Model fitting:} Fit $H_{\text{additive}}$, $H_{\text{multiplicative}}$, $H_{\text{threshold}}$ to the data. Report AIC/BIC.
+    \item \textbf{Phase diagram / heatmap:} 2D plot showing ``gain from pretraining'' $= \text{acc}(\text{pretrained}) - \text{acc}(\text{random\_init})$ as a function of $(\varepsilon, \text{shift})$. Identify the Goldilocks zone boundary.
+    \item \textbf{Interaction test:} Two-way ANOVA for significant interaction effect between $\varepsilon$ and shift.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Bonus Enhancements (If Time Permits)}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Enhancement A: Membership Inference Attacks Under Shift}
+
+\begin{description}[nosep]
+    \item[Motivation:] Does distribution shift affect \emph{empirical} privacy leakage?
+    \item[Method:] Run LiRA or basic shadow-model MIA on DP-finetuned models across shift levels.
+    \item[Key question:] Does shift amplify or reduce MIA success rate?
+    \item[Priority:] \ptag{P2} \quad \textbf{Effort:} ${\sim}3$ days
+\end{description}
+
+\subsection{Enhancement B: Pretraining Data Selection}
+
+\begin{description}[nosep]
+    \item[Motivation:] Given a pool of public data, can we \emph{select} a subset that minimizes DP finetuning loss?
+    \item[Method:] Use divergence metrics to rank public data subsets, pretrain on top-$k$, evaluate.
+    \item[Priority:] \ptag{P2} \quad \textbf{Effort:} ${\sim}2$ days
+\end{description}
+
+\subsection{Enhancement C: LoRA vs.\ Full Finetuning Under Shift}
+
+\begin{description}[nosep]
+    \item[Motivation:] Does parameter-efficient finetuning (LoRA) behave differently under shift?
+    \item[Method:] Repeat key experiments with LoRA finetuning instead of full finetuning.
+    \item[Priority:] \ptag{P2} \quad \textbf{Effort:} ${\sim}2$ days
+\end{description}
+
+\subsection{Enhancement D: Theoretical Bound Derivation (Stretch)}
+
+\begin{description}[nosep]
+    \item[Motivation:] Derive a simple theoretical bound connecting distribution shift to DP finetuning error for convex/linear models.
+    \item[Approach:] ~
+\end{description}
+\begin{itemize}[nosep]
+    \item For linear models, the DP-SGD error depends on gradient norm / clipping threshold.
+    \item Under distribution shift, the gradient norms change predictably.
+    \item Can derive:
+    \begin{equation}
+        \text{excess\_risk}_{\text{DP}}(\text{shift}) = \mathcal{O}\!\left(\frac{d \cdot C \cdot \sqrt{T} \cdot \sigma}{n}\right) + \mathcal{O}(\text{shift\_distance})
+    \end{equation}
+    where the $\sigma$ term is the DP noise.
+    \item Check if the interaction is additive or multiplicative for this simple case.
+\end{itemize}
+\textbf{Priority:} \ptag{P2} (but very high impact if achieved) \quad \textbf{Effort:} ${\sim}5$ days
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Technical Stack}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{@{}lll@{}}
+\toprule
+\textbf{Component} & \textbf{Tool} & \textbf{Notes} \\
+\midrule
+DP Training & Opacus v1.4+ & PyTorch-based DP-SGD \\
+Deep Learning & PyTorch 2.x & Core framework \\
+Image Models & torchvision (ResNet-18, CNN) & Pretrained or from scratch \\
+Language Models & HuggingFace Transformers & GPT-2 for real text \\
+MAUVE Score & \texttt{mauve-text} & Pillutla et al. \\
+FID & \texttt{clean-fid} & Image quality metric \\
+Optimal Transport & \texttt{POT} & Wasserstein distance \\
+Experiment Tracking & Weights \& Biases & Logging all runs \\
+Config Management & Hydra + YAML & Reproducible experiments \\
+Compute & V100 (16\,GB) & Single GPU sufficient \\
+Plotting & matplotlib + seaborn & Publication-quality figures \\
+Paper & \LaTeX\ (NeurIPS template) & As required by course \\
+\bottomrule
+\end{tabularx}
+\caption{Technical stack overview.}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Project Structure}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{lstlisting}
+PrivInAI-Project-2026/
+|
+|-- PROJECT_PLAN.md              # This document
+|-- README.md                    # Repo overview
+|
+|-- dp_shift_bench/              # Main benchmark package
+|   |-- __init__.py
+|   |-- datasets/
+|   |   |-- image_shifts.py      # SVHN/MNIST/CIFAR loaders
+|   |   |-- markov_chains.py     # Controllable Markov chains
+|   |   |-- text_shifts.py       # Real text domain shift
+|   |-- models/
+|   |   |-- image_models.py      # ResNet-18, SmallCNN
+|   |   |-- language_models.py   # LSTM, small Transformer
+|   |-- training/
+|   |   |-- dp_trainer.py        # DP-SGD loop (Opacus)
+|   |   |-- standard_trainer.py  # Non-private pretraining
+|   |   |-- utils.py             # LR schedulers, etc.
+|   |-- metrics/
+|   |   |-- divergences.py       # All divergence measures
+|   |   |-- evaluation.py        # Accuracy, perplexity
+|   |-- configs/
+|   |   |-- default.yaml
+|   |   |-- image_experiments.yaml
+|   |   |-- language_experiments.yaml
+|   |-- runners/
+|       |-- run_single.py        # Run one experiment
+|       |-- run_sweep.py         # Full experiment grid
+|       |-- run_divergences.py   # Compute divergence metrics
+|
+|-- experiments/                 # Experiment scripts
+|-- analysis/                    # Analysis notebooks
+|-- results/                     # Saved results (gitignored)
+|-- paper/                       # LaTeX source for reports
+|-- tests/                       # Unit tests
+|-- requirements.txt
+|-- setup.py
+\end{lstlisting}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Execution Timeline}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\textit{Aggressive --- targeting April 17 mid-review with near-complete results.}
+
+\subsection{Week 1: March 22--28 (Proposal Week)}
+
+\textbf{Deadline: Proposal due March 27}
+
+\begin{small}
+\begin{longtable}{@{}p{2cm}p{8cm}p{2.5cm}@{}}
+\toprule
+\textbf{Day} & \textbf{Task} & \textbf{Parallelizable?} \\
+\midrule
+\endhead
+Mar 22--23 & Set up repo, project structure, dependencies & No \\
+Mar 22--23 & Read core papers: Li et al., Ganesh et al. & No \\
+Mar 23--24 & Implement \texttt{markov\_chains.py} --- data generator & Yes (Agent 1) \\
+Mar 23--24 & Implement \texttt{image\_shifts.py} --- SVHN/MNIST loaders & Yes (Agent 2) \\
+Mar 23--24 & Implement \texttt{divergences.py} --- KL, JSD, TV & Yes (Agent 3) \\
+Mar 24--25 & Implement \texttt{dp\_trainer.py} --- Opacus training loop & No (core) \\
+Mar 25--26 & Run first baselines (IMG-00, IMG-01, LANG-00, LANG-01) & Yes \\
+Mar 26--27 & \textbf{Write 2-page proposal} & No \\
+Mar 27 & \textbf{SUBMIT PROPOSAL} & --- \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Week 2: March 29 -- April 4 (Core Experiments)}
+
+\begin{small}
+\begin{longtable}{@{}p{2cm}p{7cm}p{2.5cm}p{1.5cm}@{}}
+\toprule
+\textbf{Day} & \textbf{Task} & \textbf{Parallel?} & \textbf{Est.\ Time} \\
+\midrule
+\endhead
+Mar 29--30 & Run full image grid (IMG-00 to IMG-08) & Yes (Agent 1) & ${\sim}8$h GPU \\
+Mar 29--30 & Run full Markov language grid (LANG-00 to LANG-06) & Yes (Agent 2) & ${\sim}2$h GPU \\
+Mar 29--30 & Implement remaining divergences (MAUVE, FID, MMD, Wasserstein) & Yes (Agent 3) & --- \\
+Mar 31 -- Apr 1 & Compute ALL divergence metrics for ALL dataset pairs & Yes & ${\sim}4$h \\
+Apr 1--2 & Run 2D grid ($\varepsilon \times$ shift) --- language & Yes (Agent 1) & ${\sim}6$h \\
+Apr 1--2 & Run 2D grid ($\varepsilon \times$ shift) --- images & Yes (Agent 2) & ${\sim}12$h \\
+Apr 2--3 & Implement proxy $\mathcal{H}$-divergence (domain classifier) & Yes (Agent 3) & --- \\
+Apr 3--4 & Run P1 experiments (IMG-04--07, LANG-07) & Yes & ${\sim}8$h \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Week 3: April 5--11 (Analysis \& Extra Experiments)}
+
+\begin{small}
+\begin{longtable}{@{}p{2cm}p{8.5cm}p{2.5cm}@{}}
+\toprule
+\textbf{Day} & \textbf{Task} & \textbf{Parallel?} \\
+\midrule
+\endhead
+Apr 5--6 & Contribution 2 analysis: correlation, predictive modeling & Yes (Agent 1) \\
+Apr 5--6 & Contribution 3 analysis: model fitting, ANOVA & Yes (Agent 2) \\
+Apr 5--6 & Generate ALL hero figures & Yes (Agent 3) \\
+Apr 7--8 & Enhancement A (MIA under shift) --- if time permits & Optional \\
+Apr 7--8 & Enhancement C (LoRA comparison) --- if time permits & Optional \\
+Apr 9--10 & Run failed/missing experiments, collect final results & --- \\
+Apr 10--11 & Create results summary tables & --- \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Week 4: April 12--17 (Mid-Review Report)}
+
+\begin{small}
+\begin{longtable}{@{}p{2cm}p{10cm}@{}}
+\toprule
+\textbf{Day} & \textbf{Task} \\
+\midrule
+\endhead
+Apr 12--13 & Write mid-review Sections 1--2 (intro, literature survey with math) \\
+Apr 13--14 & Write mid-review Section 3 (experimental setup, benchmark design) \\
+Apr 14--15 & Write mid-review Section 4 (results so far) \\
+Apr 15--16 & Create all figures and tables for mid-review \\
+Apr 16--17 & Polish, proofread, finalize \\
+Apr 17 & \textbf{SUBMIT MID-REVIEW} \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Weeks 5--6: April 18 -- May 4 (Presentation + Remaining Work)}
+
+\begin{small}
+\begin{longtable}{@{}p{7cm}p{5cm}@{}}
+\toprule
+\textbf{Task} & \textbf{Timeline} \\
+\midrule
+\endhead
+Enhancement experiments (MIA, LoRA, data selection) & Apr 18--22 \\
+Package \texttt{dp\_shift\_bench} for release & Apr 22--25 \\
+Prepare presentation slides & Apr 25--28 \\
+\textbf{PRESENT} & Apr 29 -- May 4 \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Week 7: May 5--11 (Final Report)}
+
+\begin{small}
+\begin{longtable}{@{}p{7cm}p{5cm}@{}}
+\toprule
+\textbf{Task} & \textbf{Timeline} \\
+\midrule
+\endhead
+Write full 9-page report & May 5--9 \\
+Final figures, proofreading & May 9--10 \\
+\textbf{SUBMIT FINAL REPORT} & May 11 \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Key References}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Core References (from course document)}
+
+\begin{small}
+\begin{longtable}{@{}p{0.6cm}p{3.5cm}p{5.5cm}p{0.7cm}p{2.5cm}@{}}
+\toprule
+\textbf{Ref} & \textbf{Authors} & \textbf{Title} & \textbf{Year} & \textbf{Relevance} \\
+\midrule
+\endhead
+{[21]} & Li, Tramer, Liang, Hashimoto & Large language models can be strong differentially private learners & 2022 & Why pretraining helps DP \\
+{[22]} & Ganesh, Haghifam, Nasr, Oh, Steinke, Thakkar, Thakurta, Wang & Why is public pretraining necessary for private model training? & 2023 & Two-phase hypothesis \\
+{[10]} & Pillutla, Swayamdipta, Zellers, et al. & MAUVE: Measuring the Gap Between Neural Text and Human Text & 2021 & Distribution gap measurement \\
+{[11]} & Pillutla, Liu, Thickstun, et al. & MAUVE Scores for Generative Models: Theory and Practice & 2023 & Extended MAUVE theory \\
+{[23]} & Netzer et al. & Reading digits in natural images with unsupervised feature learning (SVHN) & 2011 & SVHN dataset \\
+{[24]} & Sakarvadia et al. & Mitigating memorization in language models & 2025 & Language memorization \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\subsection{Additional Key References (from literature search)}
+
+\begin{small}
+\begin{longtable}{@{}p{3.2cm}p{5.5cm}p{0.7cm}p{3cm}@{}}
+\toprule
+\textbf{Authors} & \textbf{Title} & \textbf{Year} & \textbf{Relevance} \\
+\midrule
+\endhead
+Setlur, Thaker, Ullman & Lower Bounds for Public-Private Learning under Distribution Shift & 2025 & Goldilocks zone theory \\
+Bassily, Cortes, Mao, Mohri & Differentially Private Domain Adaptation with Theoretical Guarantees & 2023 & Additive bound (we test this) \\
+Ben-David, Blitzer, Crammer, et al. & A theory of learning from different domains & 2010 & Domain adaptation theory \\
+Auddy, Cai, Chakraborty & Minimax and Adaptive Transfer Learning under Distributed DP & 2025 & Minimax rates for private transfer \\
+Dong, Roth, Su & Gaussian Differential Privacy & 2022 & GDP framework \\
+Tobaben et al. & On the Efficacy of DP Few-shot Image Classification & 2023 & DP with pretrained features \\
+De, Berrada, Hayes, Smith, Balle & Unlocking High-Accuracy DP Image Classification through Scale & 2022 & Scaling + pretraining for DP \\
+Li, Guo, Li, Fan, Hu, Liu & PrivLM-Bench & 2024 & Existing DP benchmark (no shift) \\
+Yichuan, Kotevska, Reshniak & Assessing MIA under Distribution Shifts & 2024 & MIA + shift \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Risk Register}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{@{}Xllp{4.5cm}@{}}
+\toprule
+\textbf{Risk} & \textbf{Likelihood} & \textbf{Impact} & \textbf{Mitigation} \\
+\midrule
+GPU time insufficient for full grid & Low & High & Prioritize P0 experiments; reduce grid \\
+Markov chain results too ``toy'' & Medium & Medium & Include real text experiments (LANG-07/08) \\
+No clear winner among divergence metrics & Medium & Low & Valid negative result \\
+Additive vs.\ multiplicative inconclusive & Medium & Medium & Report fitted models; let data speak \\
+Opacus bugs / compatibility issues & Low & High & Pin versions; test early \\
+Proposal too ambitious for reviewers & Low & Low & Clearly mark P0/P1/P2 priorities \\
+\bottomrule
+\end{tabularx}
+\caption{Risk register with mitigation strategies.}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Success Criteria}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Minimum Viable Paper (Course Project)}
+
+\begin{itemize}[nosep]
+    \item[$\square$] DP-ShiftBench with image track (P0 experiments) working
+    \item[$\square$] DP-ShiftBench with language Markov track (P0 experiments) working
+    \item[$\square$] At least 4 divergence metrics computed and correlated with DP accuracy
+    \item[$\square$] 2D grid ($\varepsilon \times$ shift) for either images or language
+    \item[$\square$] Phase diagram / hero figure
+    \item[$\square$] Clear narrative about which metric predicts DP degradation
+\end{itemize}
+
+\subsection{Full Paper (Workshop Submission)}
+
+All of the above, \textbf{plus}:
+\begin{itemize}[nosep]
+    \item[$\square$] Both image AND language tracks complete
+    \item[$\square$] All 6+ divergence metrics computed and compared
+    \item[$\square$] Formal additive vs.\ multiplicative hypothesis test
+    \item[$\square$] Cross-domain validation (best predictor on images also works for language?)
+    \item[$\square$] Open-source benchmark package released
+    \item[$\square$] At least one enhancement (MIA, LoRA, or data selection)
+\end{itemize}
+
+\subsection{Stretch Goals (Full Conference Paper)}
+
+\begin{itemize}[nosep]
+    \item[$\square$] Theoretical bound derivation for linear models
+    \item[$\square$] Enhancement D complete
+    \item[$\square$] Extended to more realistic datasets (CIFAR-100, real NLP)
+    \item[$\square$] Temporal shift experiments
+\end{itemize}
+
+\end{document}
