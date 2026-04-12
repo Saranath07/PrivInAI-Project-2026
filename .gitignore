@@ -23,14 +23,10 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 
-# Results (large files)
-results/image/**
-results/language/**
-results/figures/**
-!results/.gitkeep
-!results/image/.gitkeep
-!results/language/.gitkeep
-!results/figures/.gitkeep
+# Results (tracked via Git LFS)
+# results/image/**
+# results/language/**
+# results/figures/**
 
 # Datasets (downloaded)
 data/
@@ -39,11 +35,11 @@ datasets_cache/
 # Weights & Biases
 wandb/
 
-# Model checkpoints
-checkpoints/
-*.pt
-*.pth
-*.ckpt
+# Model checkpoints (tracked via Git LFS)
+# checkpoints/
+# *.pt
+# *.pth
+# *.ckpt
 
 # OS
 .DS_Store
