@@ -64,19 +64,41 @@
 
 ---
 
-## Full Ranking at ε=0.5 (All P0 + P1 Experiments)
+## P2 Results (IMG-09 to IMG-10)
+
+> IMG-09: SVHN full + augmentation → MNIST | IMG-10: FashionMNIST → MNIST
+
+### Accuracy Table — Mean (±Std) Test Accuracy
+
+| Experiment | Description | ε=0.5 | ε=1.0 | ε=2.0 | ε=4.0 | ε=8.0 | ε=∞ |
+|---|---|---|---|---|---|---|---|
+| IMG-09 | SVHN + augmentation → MNIST | 0.9585 ±0.001 | 0.9590 ±0.000 | 0.9594 ±0.000 | 0.9596 ±0.000 | 0.9597 ±0.000 | 0.9904 ±0.000 |
+| IMG-10 | FashionMNIST → MNIST | 0.9355 ±0.000 | 0.9364 ±0.001 | 0.9364 ±0.000 | 0.9361 ±0.000 | 0.9361 ±0.000 | 0.9900 ±0.001 |
+
+### P2 Pretrain Gain and Privacy Cost
+
+| Experiment | ε=0.5 acc | Gain vs IMG-00 | Privacy Cost |
+|---|---|---|---|
+| IMG-09 (SVHN + aug) | 0.9585 | +3.52% | −3.19% |
+| IMG-10 (FashionMNIST) | 0.9355 | +1.22% | −5.45% |
+
+---
+
+## Full Ranking at ε=0.5 (All 11 Experiments)
 
 | Rank | Experiment | Description | ε=0.5 acc | Privacy Cost |
 |---|---|---|---|---|
 | 1 | IMG-02 | SVHN {0-4} → MNIST {0-4} matched | **0.9846** | −1.33% |
 | 2 | IMG-03 | SVHN {5-9} → MNIST {0-4} mismatched | 0.9684 | −2.83% |
 | 3 | IMG-01 | SVHN full → MNIST full | 0.9597 | −3.16% |
-| 4 | IMG-07 | SVHN 50% → MNIST | 0.9552 | −3.52% |
-| 5 | IMG-05 | SVHN 10% → MNIST | 0.9534 | −3.62% |
-| 6 | IMG-06 | SVHN 25% → MNIST | 0.9529 | −3.64% |
-| 7 | IMG-08 | CIFAR-10 → MNIST | 0.9419 | −4.87% |
-| 8 | IMG-00 | No pretrain (baseline) | 0.9233 | −6.66% |
-| 9 | IMG-04 | Autoencoder pretrain → MNIST | 0.8771 | **−11.05%** |
+| 4 | IMG-09 | SVHN + augmentation → MNIST | 0.9585 | −3.19% |
+| 5 | IMG-07 | SVHN 50% → MNIST | 0.9552 | −3.52% |
+| 6 | IMG-05 | SVHN 10% → MNIST | 0.9534 | −3.62% |
+| 7 | IMG-06 | SVHN 25% → MNIST | 0.9529 | −3.64% |
+| 8 | IMG-08 | CIFAR-10 → MNIST | 0.9419 | −4.87% |
+| 9 | IMG-10 | FashionMNIST → MNIST | 0.9355 | −5.45% |
+| 10 | IMG-00 | No pretrain (baseline) | 0.9233 | −6.66% |
+| 11 | IMG-04 | Autoencoder pretrain → MNIST | 0.8771 | **−11.05%** |
 
 ---
 
@@ -148,12 +170,53 @@ images are natural color photos, structurally further from MNIST digits than SVH
 confirms a gradient: **matched classes (IMG-02) > mismatched SVHN (IMG-03) > full SVHN (IMG-01)
 ≈ SVHN subsets (IMG-05/06/07) > CIFAR-10 (IMG-08) >> Autoencoder (IMG-04)**.
 
-### Finding 9 — Pretrain data scarcity (10–50%) costs ~0.4% vs full pretrain dataset
+### Finding 9 — Pretrain data scarcity (10–50%) costs ~0.45% vs full pretrain dataset
 
 IMG-01 (SVHN full, 73K images) → 95.97% vs IMG-07 (SVHN 50%, ~36K) → 95.52% at ε=0.5.
 The gap is only 0.45%, suggesting the pretrain dataset size effect saturates quickly once the
 feature extractor has seen enough variation. For practical DP training, even a small unlabeled
 dataset from the source domain is highly valuable.
+
+---
+
+## P2 Key Findings
+
+### Finding 10 — Augmentation during pretrain provides negligible benefit (IMG-09 ≈ IMG-01)
+
+IMG-09 (SVHN + augmentation, 95.85%) vs IMG-01 (SVHN no augmentation, 95.97%) at ε=0.5:
+the difference is only **0.12%** — well within the noise floor. Augmenting the pretrain data
+(random crops, flips, color jitter) does not meaningfully improve the quality of the learned
+feature representation for downstream DP-finetuning. The features are already saturated by
+the full SVHN dataset size.
+
+### Finding 11 — FashionMNIST pretrain (IMG-10) sits just above baseline
+
+IMG-10 (FashionMNIST → MNIST) achieves 93.55% at ε=0.5, only **+1.22%** over baseline.
+FashionMNIST shares the same 28×28 grayscale format as MNIST but its semantics (clothing
+categories) are completely unrelated to digits. The small gain comes purely from the structural
+similarity (stroke-like edges), but without digit-relevant features the pretrained representation
+is nearly as hard to finetune privately as random init.
+
+Privacy cost of 5.45% is also high — second worst after no-pretrain — confirming that format
+similarity alone is insufficient; semantic or at least domain closeness is required.
+
+### Finding 12 — Clear domain-similarity gradient across all 11 experiments
+
+Ranking by ε=0.5 accuracy maps cleanly onto an intuitive domain-similarity ordering:
+
+```
+Matched class subset (IMG-02)                → 98.46%   best
+Mismatched class subset, same domain (IMG-03) → 96.84%
+Full same-domain (IMG-01, IMG-09)             → 95.6–96%
+Same-domain subsets (IMG-05/06/07)            → 95.3–95.5%
+Related but different domain (IMG-08 CIFAR)   → 94.19%
+Format-similar, semantics-different (IMG-10)  → 93.55%
+No pretrain (IMG-00)                          → 92.33%
+Unsupervised pretrain (IMG-04)                → 87.71%   worst
+```
+
+This gradient provides a practical guideline: **class-level alignment > domain similarity >
+format similarity > no pretrain > unsupervised pretrain** for minimising DP-SGD privacy cost.
 
 ---
 
@@ -163,10 +226,10 @@ dataset from the source domain is highly valuable.
 |---|---|---|
 | P0 | IMG-00, IMG-01, IMG-02, IMG-03 | ✅ Complete |
 | P1 | IMG-04, IMG-05, IMG-06, IMG-07, IMG-08 | ✅ Complete |
-| P2 | IMG-09, IMG-10 | ⏳ Pending |
-| Divergences | All | ⏳ Pending (after P2) |
+| P2 | IMG-09, IMG-10 | ✅ Complete |
+| Divergences | All | ⏳ Pending |
 | Analysis | Figures, tables, hypothesis tests | ⏳ Pending |
 
 ---
 
-*Last updated: 2026-04-12 after P1 sweep completion.*
+*Last updated: 2026-04-12 after P2 sweep completion (all 198 runs done).*
