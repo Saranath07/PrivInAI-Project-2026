@@ -36,6 +36,50 @@
 
 ---
 
+## P1 Results (IMG-04 to IMG-08)
+
+> IMG-04: SVHN autoencoder pretrain → MNIST | IMG-05: SVHN 10% → MNIST | IMG-06: SVHN 25% → MNIST
+> IMG-07: SVHN 50% → MNIST | IMG-08: CIFAR-10 → MNIST
+
+### Accuracy Table — Mean (±Std) Test Accuracy
+
+| Experiment | Description | ε=0.5 | ε=1.0 | ε=2.0 | ε=4.0 | ε=8.0 | ε=∞ |
+|---|---|---|---|---|---|---|---|
+| IMG-04 | SVHN autoencoder → MNIST | 0.8771 ±0.006 | 0.8775 ±0.003 | 0.8773 ±0.002 | 0.8773 ±0.002 | 0.8771 ±0.002 | 0.9876 ±0.000 |
+| IMG-05 | SVHN 10% → MNIST | 0.9534 ±0.000 | 0.9533 ±0.001 | 0.9536 ±0.001 | 0.9535 ±0.000 | 0.9534 ±0.000 | 0.9896 ±0.001 |
+| IMG-06 | SVHN 25% → MNIST | 0.9529 ±0.001 | 0.9530 ±0.000 | 0.9529 ±0.000 | 0.9532 ±0.000 | 0.9532 ±0.000 | 0.9893 ±0.001 |
+| IMG-07 | SVHN 50% → MNIST | 0.9552 ±0.001 | 0.9559 ±0.000 | 0.9559 ±0.000 | 0.9560 ±0.000 | 0.9559 ±0.000 | 0.9904 ±0.000 |
+| IMG-08 | CIFAR-10 → MNIST | 0.9419 ±0.000 | 0.9426 ±0.000 | 0.9426 ±0.000 | 0.9426 ±0.000 | 0.9425 ±0.001 | 0.9906 ±0.000 |
+
+### Pretrain Gain over Baseline (IMG-00) at ε=0.5
+
+| Experiment | ε=0.5 acc | Gain vs IMG-00 | Privacy Cost (ε=∞ → ε=0.5) |
+|---|---|---|---|
+| IMG-00 (baseline) | 0.9233 | — | −6.66% |
+| IMG-04 (autoencoder) | 0.8771 | **−4.62%** ← worse | −11.05% |
+| IMG-05 (SVHN 10%) | 0.9534 | +3.01% | −3.62% |
+| IMG-06 (SVHN 25%) | 0.9529 | +2.96% | −3.64% |
+| IMG-07 (SVHN 50%) | 0.9552 | +3.19% | −3.52% |
+| IMG-08 (CIFAR-10) | 0.9419 | +1.86% | −4.87% |
+
+---
+
+## Full Ranking at ε=0.5 (All P0 + P1 Experiments)
+
+| Rank | Experiment | Description | ε=0.5 acc | Privacy Cost |
+|---|---|---|---|---|
+| 1 | IMG-02 | SVHN {0-4} → MNIST {0-4} matched | **0.9846** | −1.33% |
+| 2 | IMG-03 | SVHN {5-9} → MNIST {0-4} mismatched | 0.9684 | −2.83% |
+| 3 | IMG-01 | SVHN full → MNIST full | 0.9597 | −3.16% |
+| 4 | IMG-07 | SVHN 50% → MNIST | 0.9552 | −3.52% |
+| 5 | IMG-05 | SVHN 10% → MNIST | 0.9534 | −3.62% |
+| 6 | IMG-06 | SVHN 25% → MNIST | 0.9529 | −3.64% |
+| 7 | IMG-08 | CIFAR-10 → MNIST | 0.9419 | −4.87% |
+| 8 | IMG-00 | No pretrain (baseline) | 0.9233 | −6.66% |
+| 9 | IMG-04 | Autoencoder pretrain → MNIST | 0.8771 | **−11.05%** |
+
+---
+
 ## Key Findings
 
 ### Finding 1 — Pretraining consistently reduces the privacy cost
@@ -76,16 +120,53 @@ values.
 
 ---
 
+## P1 Key Findings
+
+### Finding 6 — Autoencoder pretrain (IMG-04) is the worst strategy — worse than no pretrain
+
+IMG-04 achieves only **87.71%** at ε=0.5, which is **4.62% below the no-pretrain baseline**
+(92.33%). Its privacy cost is 11.05%, nearly double the baseline's 6.66%. This is the single
+most striking finding of the P1 sweep.
+
+**Interpretation:** Unsupervised autoencoder features optimize for pixel reconstruction, not
+class discriminability. During DP-finetuning, the noisy gradients must simultaneously re-orient
+the features toward classification — a much harder task than starting from scratch with random
+init. Supervised pretraining provides discriminative features that survive DP noise; autoencoder
+pretraining does not.
+
+### Finding 7 — Pretrain data volume has diminishing returns above 10%
+
+IMG-05 (10% SVHN) → 95.34%, IMG-06 (25%) → 95.29%, IMG-07 (50%) → 95.52%.
+The difference between 10% and 50% of pretrain data is only **0.18%** at ε=0.5. Even 10% of
+SVHN (~7,300 images) is enough to capture the low-level visual features that make DP-finetuning
+easier. More pretrain data yields negligible gains beyond a threshold.
+
+### Finding 8 — CIFAR-10 (larger domain gap) still helps, but less than SVHN
+
+IMG-08 (CIFAR-10 pretrain) achieves 94.19% at ε=0.5 — a +1.86% gain over baseline. CIFAR-10
+images are natural color photos, structurally further from MNIST digits than SVHN is. The result
+confirms a gradient: **matched classes (IMG-02) > mismatched SVHN (IMG-03) > full SVHN (IMG-01)
+≈ SVHN subsets (IMG-05/06/07) > CIFAR-10 (IMG-08) >> Autoencoder (IMG-04)**.
+
+### Finding 9 — Pretrain data scarcity (10–50%) costs ~0.4% vs full pretrain dataset
+
+IMG-01 (SVHN full, 73K images) → 95.97% vs IMG-07 (SVHN 50%, ~36K) → 95.52% at ε=0.5.
+The gap is only 0.45%, suggesting the pretrain dataset size effect saturates quickly once the
+feature extractor has seen enough variation. For practical DP training, even a small unlabeled
+dataset from the source domain is highly valuable.
+
+---
+
 ## Status
 
 | Priority | Experiments | Status |
 |---|---|---|
 | P0 | IMG-00, IMG-01, IMG-02, IMG-03 | ✅ Complete |
-| P1 | IMG-04, IMG-05, IMG-06, IMG-07, IMG-08 | ⏳ Pending |
+| P1 | IMG-04, IMG-05, IMG-06, IMG-07, IMG-08 | ✅ Complete |
 | P2 | IMG-09, IMG-10 | ⏳ Pending |
-| Divergences | All | ⏳ Pending (after P1) |
+| Divergences | All | ⏳ Pending (after P2) |
 | Analysis | Figures, tables, hypothesis tests | ⏳ Pending |
 
 ---
 
-*Last updated: 2026-04-12 after P0 sweep completion.*
+*Last updated: 2026-04-12 after P1 sweep completion.*
