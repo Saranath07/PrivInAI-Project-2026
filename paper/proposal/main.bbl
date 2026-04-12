@@ -1,0 +1,88 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abadi et~al.(2016)Abadi, Chu, Goodfellow, McMahan, Mironov, Talwar,
+  and Zhang]{abadi2016deep}
+Martin Abadi, Andy Chu, Ian Goodfellow, H~Brendan McMahan, Ilya Mironov, Kunal
+  Talwar, and Li~Zhang.
+\newblock Deep learning with differential privacy.
+\newblock In \emph{Proceedings of the 2016 ACM SIGSAC Conference on Computer
+  and Communications Security}, pages 308--318, 2016.
+
+\bibitem[Bassily et~al.(2023)Bassily, Cortes, Mao, and Mohri]{bassily2023dp}
+Raef Bassily, Corinna Cortes, Anqi Mao, and Mehryar Mohri.
+\newblock Differentially private domain adaptation with theoretical guarantees.
+\newblock 2023.
+
+\bibitem[Ben-David et~al.(2010)Ben-David, Blitzer, Crammer, Kulesza, Pereira,
+  and Vaughan]{bendavid2010theory}
+Shai Ben-David, John Blitzer, Koby Crammer, Alex Kulesza, Fernando Pereira, and
+  Jennifer~Wortman Vaughan.
+\newblock A theory of learning from different domains.
+\newblock \emph{Machine Learning}, 79\penalty0 (1):\penalty0 151--175, 2010.
+
+\bibitem[De et~al.(2022)De, Berrada, Hayes, Smith, and Balle]{de2022unlocking}
+Soham De, Leonard Berrada, Jamie Hayes, Samuel~L Smith, and Borja Balle.
+\newblock Unlocking high-accuracy differentially private image classification
+  through scale.
+\newblock \emph{arXiv preprint arXiv:2204.13650}, 2022.
+
+\bibitem[Ganesh et~al.(2023)Ganesh, Haghifam, Nasr, Oh, Steinke, Thakkar,
+  Thakurta, and Wang]{ganesh2023why}
+Arun Ganesh, Mahdi Haghifam, Milad Nasr, Sewoong Oh, Thomas Steinke,
+  Om~Thakkar, Abhradeep~Guha Thakurta, and Lun Wang.
+\newblock Why is public pretraining necessary for private model training?
+\newblock In \emph{International Conference on Machine Learning}, pages
+  10611--10627. PMLR, 2023.
+
+\bibitem[Li et~al.(2022)Li, Tramer, Liang, and Hashimoto]{li2022large}
+Xuechen Li, Florian Tramer, Percy Liang, and Tatsunori Hashimoto.
+\newblock Large language models can be strong differentially private learners.
+\newblock \emph{arXiv preprint arXiv:2110.05679}, 2022.
+
+\bibitem[Netzer et~al.(2011)Netzer, Wang, Coates, Bissacco, Wu, and
+  Ng]{netzer2011svhn}
+Yuval Netzer, Tao Wang, Adam Coates, Alessandro Bissacco, Baolin Wu, and
+  Andrew~Y Ng.
+\newblock Reading digits in natural images with unsupervised feature learning.
+\newblock In \emph{NeurIPS Workshop on Deep Learning and Unsupervised Feature
+  Learning}, 2011.
+
+\bibitem[Parmar et~al.(2022)Parmar, Zhang, and Zhu]{parmar2022cleanfid}
+Gaurav Parmar, Richard Zhang, and Jun-Yan Zhu.
+\newblock On aliased resizing and surprising subtleties in {GAN} evaluation.
+\newblock In \emph{CVPR}, 2022.
+
+\bibitem[Pillutla et~al.(2021)Pillutla, Swayamdipta, Zellers, Thickstun,
+  Welleck, Choi, and Harchaoui]{pillutla2021mauve}
+Krishna Pillutla, Swabha Swayamdipta, Rowan Zellers, John Thickstun, Sean
+  Welleck, Yejin Choi, and Zaid Harchaoui.
+\newblock {MAUVE}: Measuring the gap between neural text and human text using
+  divergence frontiers.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  34:\penalty0 4816--4828, 2021.
+
+\bibitem[Pillutla et~al.(2023)Pillutla, Liu, Thickstun, Welleck, Swayamdipta,
+  Zellers, Oh, Choi, and Harchaoui]{pillutla2023mauve}
+Krishna Pillutla, Lang Liu, John Thickstun, Sean Welleck, Swabha Swayamdipta,
+  Rowan Zellers, Sewoong Oh, Yejin Choi, and Zaid Harchaoui.
+\newblock Mauve scores for generative models: Theory and practice.
+\newblock \emph{Journal of Machine Learning Research}, 24\penalty0
+  (356):\penalty0 1--92, 2023.
+
+\bibitem[Setlur et~al.(2025)Setlur, Thaker, and Ullman]{setlur2025lower}
+Amrith Setlur, Darshan Thaker, and Jonathan Ullman.
+\newblock Lower bounds for public-private learning under distribution shift.
+\newblock \emph{arXiv preprint arXiv:2507.17895}, 2025.
+
+\bibitem[Tram{\`e}r and Boneh(2021)]{tramer2021differentially}
+Florian Tram{\`e}r and Dan Boneh.
+\newblock Differentially private learning needs better features (or much more
+  data).
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+
+\end{thebibliography}
