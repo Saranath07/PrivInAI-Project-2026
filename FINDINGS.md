@@ -227,52 +227,62 @@ format similarity > no pretrain > unsupervised pretrain** for minimising DP-SGD 
 | P0 | IMG-00, IMG-01, IMG-02, IMG-03 | ✅ Complete |
 | P1 | IMG-04, IMG-05, IMG-06, IMG-07, IMG-08 | ✅ Complete |
 | P2 | IMG-09, IMG-10 | ✅ Complete |
-| Divergences | IMG-01 to IMG-08 (P1) | ✅ Complete |
-| Divergences | IMG-09, IMG-10 (P2) | ⏳ Pending |
+| Divergences | All (IMG-01 to IMG-10) | ✅ Complete |
 | Analysis | Figures, tables, hypothesis tests | ⏳ Pending |
 
 ---
 
-## Divergence Metrics (IMG-01 to IMG-08)
+## Divergence Metrics (All Experiments, IMG-01 to IMG-10)
 
-> Computed between pretrain and finetune feature distributions using the IMG-01 checkpoint
-> as the feature extractor (256-dim SmallCNN features). P1 metrics: FID, KL, JSD, TV, MMD, PAD, Wasserstein.
+> Computed between pretrain and finetune feature distributions using each experiment's own
+> SmallCNN checkpoint as the feature extractor (256-dim features → PCA 32-dim for JSD/KL).
+> JSD ∈ [0, log 2 ≈ 0.693]. Higher = larger distribution shift.
 
-| Experiment | Description | FID ↑ | TV ↑ | MMD ↑ | PAD ↑ | W1 ↑ |
-|---|---|---|---|---|---|---|
-| IMG-03 | SVHN {5-9} → MNIST {0-4} mismatched | 188.65 | 0.180 | 0.1353 | 1.983 | 9.878 |
-| IMG-01 | SVHN full → MNIST full | 195.94 | 0.138 | 0.0602 | 1.968 | 11.023 |
-| IMG-04 | SVHN autoencoder → MNIST | 194.02 | 0.140 | 0.0620 | 1.970 | 11.023 |
-| IMG-07 | SVHN 50% → MNIST | 195.90 | 0.139 | 0.0579 | 1.975 | 10.503 |
-| IMG-06 | SVHN 25% → MNIST | 195.75 | 0.144 | 0.0656 | 1.968 | 10.151 |
-| IMG-02 | SVHN {0-4} → MNIST {0-4} matched | 204.14 | 0.165 | 0.0779 | 1.978 | 9.034 |
-| IMG-05 | SVHN 10% → MNIST | 196.11 | 0.178 | 0.1023 | 1.990 | 11.053 |
-| IMG-08 | CIFAR-10 → MNIST | **255.01** | **0.256** | **0.1699** | **1.995** | **12.625** |
+| Experiment | Description | FID ↑ | KL ↑ | JSD ↑ | TV ↑ | MMD ↑ | PAD ↑ | W1 ↑ | ε=0.5 acc |
+|---|---|---|---|---|---|---|---|---|---|
+| IMG-01 | SVHN full → MNIST | 196.7 | 52.67 | 0.263 | 0.139 | 0.061 | 1.974 | 10.96 | 95.97% |
+| IMG-07 | SVHN 50% → MNIST | 194.7 | 51.07 | 0.377 | 0.139 | 0.059 | 1.972 | 10.51 | 95.52% |
+| IMG-06 | SVHN 25% → MNIST | 194.0 | 56.59 | 0.430 | 0.143 | 0.063 | 1.977 | 10.13 | 95.29% |
+| IMG-04 | SVHN autoencoder → MNIST | 194.6 | 53.45 | 0.490 | 0.139 | 0.060 | 1.974 | 11.03 | 87.71% |
+| IMG-05 | SVHN 10% → MNIST | 196.1 | 67.52 | 0.490 | 0.178 | 0.103 | 1.990 | 10.97 | 95.34% |
+| IMG-09 | SVHN + aug → MNIST | 191.4 | 58.69 | 0.493 | 0.143 | 0.062 | 1.982 | 11.12 | 95.85% |
+| IMG-03 | SVHN {5-9} → MNIST {0-4} | 190.1 | 89.16 | 0.504 | 0.181 | 0.138 | 1.984 | 9.72 | 96.84% |
+| IMG-02 | SVHN {0-4} → MNIST {0-4} | 204.8 | 63.76 | 0.523 | 0.166 | 0.079 | 1.982 | 9.02 | 98.46% |
+| IMG-08 | CIFAR-10 → MNIST | 254.8 | 65.84 | 0.623 | 0.257 | 0.169 | 1.996 | 12.75 | 94.19% |
+| IMG-10 | FashionMNIST → MNIST | 239.4 | 185.92 | **0.641** | **0.289** | 0.139 | 1.991 | 13.41 | 93.55% |
 
 ### Finding 13 — Divergence metrics do NOT predict DP-finetuning accuracy
 
 The most important insight from the divergence analysis: **standard distribution metrics are
 poor predictors of how useful a pretrained model will be for DP-SGD**.
 
-The clearest counterexample: **IMG-02 (matched classes) has a HIGHER FID (204) than IMG-01
-(full SVHN, FID=196)**, yet IMG-02 achieves dramatically better DP accuracy (98.5% vs 95.97%).
-The class-subset selection creates a distribution that looks *more different* to InceptionV3
-features, but the semantic alignment of digit classes makes it far more useful for finetuning.
+The starkest counterexample: **IMG-02 (matched classes, JSD=0.523) and IMG-04 (autoencoder,
+JSD=0.490) have nearly identical divergences**, yet their DP accuracies are 98.46% vs 87.71% —
+an 11-point gap. The divergence metrics measure how different the two distributions look in
+feature space, but they cannot distinguish a *discriminative* pretrained representation from a
+*reconstructive* one.
 
-Similarly, IMG-04 (autoencoder, worst accuracy at 87.7%) has essentially the same FID (194) as
-IMG-01 (best SVHN result, 95.97%). FID cannot distinguish a bad pretrained representation from
-a good one when both come from the same source domain.
+A second counterexample: IMG-03 (mismatched classes, JSD=0.504) achieves 96.84% while
+IMG-05 (SVHN 10%, JSD=0.490) achieves only 95.34% — despite almost identical divergence.
 
 **Practical implication:** When selecting a pretrain dataset for DP-finetuning, optimising for
-low FID/MMD is insufficient — class-level semantic alignment is the dominant factor.
+low FID or JSD is insufficient. Class-level semantic alignment is the dominant factor that
+distribution metrics cannot capture.
 
-### Finding 14 — CIFAR-10 is the only clearly separable outlier by divergence
+### Finding 14 — SVHN full pretrain (IMG-01) has the LOWEST distribution shift
 
-IMG-08 (CIFAR-10) stands apart on every metric: FID=255 (+30% over SVHN), TV=0.256 (2×),
-MMD=0.170 (3×). All PAD values are near 2.0 (maximum), so PAD provides no useful signal
-for separating SVHN-pretrained experiments from each other — the domains are always nearly
-perfectly linearly separable from MNIST regardless of the specific SVHN subset used.
+IMG-01 has the lowest JSD (0.263) and TV (0.139) of all experiments. Full SVHN contains all
+10 digit classes and maximally overlaps with MNIST's digit distribution. As the subset size
+shrinks (IMG-07→06→05), JSD rises (0.377→0.430→0.490) because the smaller sample covers
+the distribution less uniformly. Augmentation (IMG-09, JSD=0.493) looks similar to IMG-05.
+
+### Finding 15 — CIFAR-10 and FashionMNIST are clear outliers by divergence
+
+IMG-08 (CIFAR-10) and IMG-10 (FashionMNIST) stand apart: FID 254/239, JSD 0.62/0.64,
+TV 0.257/0.289, W1 12.75/13.41 — all substantially higher than any SVHN variant (~190–205
+FID, ~0.26–0.52 JSD). PAD is near 2.0 for all experiments, confirming it has no discriminative
+power in this setting — all pretrain/finetune pairs are nearly perfectly linearly separable.
 
 ---
 
-*Last updated: 2026-04-12 after P2 sweep and P1 divergence computation.*
+*Last updated: 2026-04-12 after full divergence computation (all 10 experiments, fixed JSD).*

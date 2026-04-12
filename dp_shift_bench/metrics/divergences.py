@@ -253,8 +253,18 @@ def compute_jsd(features1: np.ndarray, features2: np.ndarray) -> float:
     """
     JSD = 0.5·KL(P‖M) + 0.5·KL(Q‖M),  M = 0.5·(P+Q).
 
-    Uses the k-NN KL estimator on a mixture.  Result ∈ [0, log 2].
+    Uses the k-NN KL estimator after PCA reduction to 32 dims.
+    Result ∈ [0, log 2].
+
+    Two fixes vs the naive implementation:
+    1. PCA to 32 dims: the Wang et al. k-NN estimator requires n >> d.
+       At d=256 and n≈1250 the ratio is only 5×; at d=32 it becomes 39×.
+    2. Split-half independence: query points must NOT be in the mixture —
+       otherwise each point finds itself at distance 0 and log(ν/ρ) goes
+       systematically negative, collapsing the estimate to 0 after clipping.
     """
+    from sklearn.decomposition import PCA
+
     MAX = 2500
     rng = np.random.default_rng(0)
 
@@ -263,10 +273,23 @@ def compute_jsd(features1: np.ndarray, features2: np.ndarray) -> float:
     if len(features2) > MAX:
         features2 = features2[rng.choice(len(features2), MAX, replace=False)]
 
-    mixture = np.concatenate([features1, features2], axis=0)
+    # PCA to 32 dims fitted on the joint cloud
+    combined = np.concatenate([features1, features2], axis=0)
+    n_components = min(32, combined.shape[1], len(combined) - 1)
+    pca = PCA(n_components=n_components, random_state=0)
+    features1 = pca.fit_transform(combined)[: len(features1)]
+    features2 = pca.transform(combined[len(features1) :])
 
-    kl_pm = compute_kl_divergence_estimated(features1, mixture)
-    kl_qm = compute_kl_divergence_estimated(features2, mixture)
+    # Split: query half vs mixture half (query must be independent from mixture)
+    mid1 = len(features1) // 2
+    mid2 = len(features2) // 2
+    p_query, p_mix = features1[:mid1], features1[mid1:]
+    q_query, q_mix = features2[:mid2], features2[mid2:]
+
+    mixture = np.concatenate([p_mix, q_mix], axis=0)
+
+    kl_pm = compute_kl_divergence_estimated(p_query, mixture)
+    kl_qm = compute_kl_divergence_estimated(q_query, mixture)
 
     jsd = 0.5 * kl_pm + 0.5 * kl_qm
     return float(np.clip(jsd, 0.0, np.log(2)))
