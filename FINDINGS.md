@@ -227,9 +227,52 @@ format similarity > no pretrain > unsupervised pretrain** for minimising DP-SGD 
 | P0 | IMG-00, IMG-01, IMG-02, IMG-03 | ✅ Complete |
 | P1 | IMG-04, IMG-05, IMG-06, IMG-07, IMG-08 | ✅ Complete |
 | P2 | IMG-09, IMG-10 | ✅ Complete |
-| Divergences | All | ⏳ Pending |
+| Divergences | IMG-01 to IMG-08 (P1) | ✅ Complete |
+| Divergences | IMG-09, IMG-10 (P2) | ⏳ Pending |
 | Analysis | Figures, tables, hypothesis tests | ⏳ Pending |
 
 ---
 
-*Last updated: 2026-04-12 after P2 sweep completion (all 198 runs done).*
+## Divergence Metrics (IMG-01 to IMG-08)
+
+> Computed between pretrain and finetune feature distributions using the IMG-01 checkpoint
+> as the feature extractor (256-dim SmallCNN features). P1 metrics: FID, KL, JSD, TV, MMD, PAD, Wasserstein.
+
+| Experiment | Description | FID ↑ | TV ↑ | MMD ↑ | PAD ↑ | W1 ↑ |
+|---|---|---|---|---|---|---|
+| IMG-03 | SVHN {5-9} → MNIST {0-4} mismatched | 188.65 | 0.180 | 0.1353 | 1.983 | 9.878 |
+| IMG-01 | SVHN full → MNIST full | 195.94 | 0.138 | 0.0602 | 1.968 | 11.023 |
+| IMG-04 | SVHN autoencoder → MNIST | 194.02 | 0.140 | 0.0620 | 1.970 | 11.023 |
+| IMG-07 | SVHN 50% → MNIST | 195.90 | 0.139 | 0.0579 | 1.975 | 10.503 |
+| IMG-06 | SVHN 25% → MNIST | 195.75 | 0.144 | 0.0656 | 1.968 | 10.151 |
+| IMG-02 | SVHN {0-4} → MNIST {0-4} matched | 204.14 | 0.165 | 0.0779 | 1.978 | 9.034 |
+| IMG-05 | SVHN 10% → MNIST | 196.11 | 0.178 | 0.1023 | 1.990 | 11.053 |
+| IMG-08 | CIFAR-10 → MNIST | **255.01** | **0.256** | **0.1699** | **1.995** | **12.625** |
+
+### Finding 13 — Divergence metrics do NOT predict DP-finetuning accuracy
+
+The most important insight from the divergence analysis: **standard distribution metrics are
+poor predictors of how useful a pretrained model will be for DP-SGD**.
+
+The clearest counterexample: **IMG-02 (matched classes) has a HIGHER FID (204) than IMG-01
+(full SVHN, FID=196)**, yet IMG-02 achieves dramatically better DP accuracy (98.5% vs 95.97%).
+The class-subset selection creates a distribution that looks *more different* to InceptionV3
+features, but the semantic alignment of digit classes makes it far more useful for finetuning.
+
+Similarly, IMG-04 (autoencoder, worst accuracy at 87.7%) has essentially the same FID (194) as
+IMG-01 (best SVHN result, 95.97%). FID cannot distinguish a bad pretrained representation from
+a good one when both come from the same source domain.
+
+**Practical implication:** When selecting a pretrain dataset for DP-finetuning, optimising for
+low FID/MMD is insufficient — class-level semantic alignment is the dominant factor.
+
+### Finding 14 — CIFAR-10 is the only clearly separable outlier by divergence
+
+IMG-08 (CIFAR-10) stands apart on every metric: FID=255 (+30% over SVHN), TV=0.256 (2×),
+MMD=0.170 (3×). All PAD values are near 2.0 (maximum), so PAD provides no useful signal
+for separating SVHN-pretrained experiments from each other — the domains are always nearly
+perfectly linearly separable from MNIST regardless of the specific SVHN subset used.
+
+---
+
+*Last updated: 2026-04-12 after P2 sweep and P1 divergence computation.*
