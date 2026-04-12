@@ -1,0 +1,45 @@
+# Default configuration for image track experiments
+
+# Model
+model:
+  arch: "smallcnn"    # "smallcnn" or "resnet18"
+
+# Pretraining
+pretrain:
+  epochs: 20
+  lr: 0.01
+  momentum: 0.9
+  weight_decay: 1e-4
+  batch_size: 256
+
+# Autoencoder pretraining (IMG-04)
+autoencoder:
+  epochs: 30
+  lr: 0.001
+  batch_size: 256
+
+# DP Finetuning
+finetune:
+  epochs: 15
+  lr: 0.001
+  max_grad_norm: 1.0
+  batch_size: 256
+  delta: 1.0e-5
+
+# Epsilon grid
+epsilons: [0.5, 1.0, 2.0, 4.0, 8.0, .inf]
+
+# Reproducibility
+seeds: [42, 123, 456]
+
+# Data
+data_root: "./data"
+results_root: "./results/image"
+checkpoints_root: "./checkpoints/image"
+
+# Debug mode (for CPU testing)
+debug: false
+
+# Divergence metrics
+divergences:
+  priority: "P1"     # "P0", "P1", or "all"

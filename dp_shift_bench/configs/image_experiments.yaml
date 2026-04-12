@@ -1,0 +1,79 @@
+# All image experiments
+
+experiments:
+  IMG-00:
+    pretrain_data: null
+    pretrain_method: null
+    finetune_data: "mnist_full"
+    description: "Baseline: no pretraining"
+    priority: "P0"
+
+  IMG-01:
+    pretrain_data: "svhn_full"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Full domain gap"
+    priority: "P0"
+
+  IMG-02:
+    pretrain_data: "svhn_0to4"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_0to4"
+    description: "Matched class subset"
+    priority: "P0"
+
+  IMG-03:
+    pretrain_data: "svhn_5to9"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_0to4"
+    description: "Mismatched class subset"
+    priority: "P0"
+
+  IMG-04:
+    pretrain_data: "svhn_full"
+    pretrain_method: "autoencoder"
+    finetune_data: "mnist_full"
+    description: "Unsupervised pretrain (task gap)"
+    priority: "P1"
+
+  IMG-05:
+    pretrain_data: "svhn_10pct"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Data scarcity 10%"
+    priority: "P1"
+
+  IMG-06:
+    pretrain_data: "svhn_25pct"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Data scarcity 25%"
+    priority: "P1"
+
+  IMG-07:
+    pretrain_data: "svhn_50pct"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Data scarcity 50%"
+    priority: "P1"
+
+  IMG-08:
+    pretrain_data: "cifar10_full"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Larger domain gap (CIFAR-10)"
+    priority: "P1"
+
+  IMG-09:
+    pretrain_data: "svhn_augmented"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Controlled style shift"
+    priority: "P2"
+
+  IMG-10:
+    pretrain_data: "fashionmnist_full"
+    pretrain_method: "supervised"
+    finetune_data: "mnist_full"
+    description: "Same format, different semantics"
+    priority: "P2"
