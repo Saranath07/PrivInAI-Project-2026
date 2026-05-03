@@ -192,78 +192,123 @@ function FlowParticles({ from, to, color, count = 5, startDelay = 0, repeat = tr
   )
 }
 
+// Gaussian PDF value
+function gauss(x: number, mu: number, sigma: number) {
+  return Math.exp(-0.5 * ((x - mu) / sigma) ** 2)
+}
+
+// Build an SVG path for a Gaussian curve
+function gaussPath(mu: number, sigma: number, W: number, _H: number, baseline: number, amplitude: number) {
+  const pts: string[] = []
+  for (let px = 0; px <= W; px += 2) {
+    const xVal = (px / W) * 6 - 3          // map px → [-3, 3] in std-dev space
+    const y = baseline - gauss(xVal, (mu / W) * 6 - 3, sigma) * amplitude
+    pts.push(`${px},${y.toFixed(1)}`)
+  }
+  return 'M ' + pts.join(' L ')
+}
+
 function GapAnnotation() {
+  const [eps, setEps] = useState(0.5)
+
+  const W = 520, H = 130, baseline = H - 10, amplitude = H - 22
+  const sigma = 0.55
+  // P centred at 35% of width; Q shifts right as ε increases
+  const pMu = W * 0.35
+  const shift = eps * 14                   // pixels of separation per ε unit
+  const qMu = pMu + shift
+
+  const pPath = gaussPath(pMu, sigma, W, H, baseline, amplitude)
+  const qPath = gaussPath(qMu, sigma, W, H, baseline, amplitude)
+
+  // Privacy label
+  const label = eps <= 1 ? 'STRONG PRIVACY' : eps <= 4 ? 'MODERATE PRIVACY' : 'WEAK PRIVACY'
+  const labelColor = eps <= 1 ? '#10B981' : eps <= 4 ? '#F59E0B' : '#EF4444'
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.8, duration: 0.5 }}
-      className="flex items-center gap-5"
       style={{
-        width: '100%',
-        background: '#FFFFFF',
-        border: '1px solid #E5E5E5',
-        borderRadius: 12,
-        padding: '14px 20px',
+        width: '100%', background: '#FFFFFF',
+        border: '1px solid #E5E5E5', borderRadius: 14,
+        padding: '18px 28px', display: 'flex', alignItems: 'center', gap: 32,
       }}>
-      {/* Overlapping distribution curves — larger */}
-      <svg width={420} height={110} viewBox="0 0 420 110" style={{ flexShrink: 0 }}>
-        {/* Public gaussian */}
-        <motion.path
-          d="M 20 95 Q 80 5 140 95 Q 200 5 260 95"
-          fill="#6366F120" stroke="#6366F1" strokeWidth={2}
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-          transition={{ delay: 1.9, duration: 0.7 }}
-        />
-        {/* Private gaussian – shifted right */}
-        <motion.path
-          d="M 160 95 Q 220 5 280 95 Q 340 5 400 95"
-          fill="#EC489920" stroke="#EC4899" strokeWidth={2}
-          initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
-          transition={{ delay: 2.1, duration: 0.7 }}
-        />
-        {/* baseline */}
-        <line x1={10} y1={95} x2={410} y2={95} stroke="#E5E5E5" strokeWidth={1} />
-        {/* gap arrow */}
-        <motion.line x1={140} y1={55} x2={260} y2={55} stroke="#4B5563" strokeWidth={1.5}
-          strokeDasharray="4,3" markerStart="url(#gapStart)" markerEnd="url(#gapEnd)"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }} />
-        <defs>
-          <marker id="gapStart" markerWidth={7} markerHeight={7} refX={4} refY={3.5} orient="auto">
-            <polygon points="7,0 0,3.5 7,7" fill="#4B5563" />
-          </marker>
-          <marker id="gapEnd" markerWidth={7} markerHeight={7} refX={3} refY={3.5} orient="auto">
-            <polygon points="0,0 7,3.5 0,7" fill="#4B5563" />
-          </marker>
-        </defs>
-        <motion.text x={200} y={46} textAnchor="middle" fill="#4B5563"
-          fontSize={13} fontWeight={700} fontFamily="Atkinson Hyperlegible"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>
-          distribution gap
-        </motion.text>
-        {/* labels */}
-        <text x={140} y={108} textAnchor="middle" fill="#6366F1" fontSize={11} fontFamily="Atkinson Hyperlegible" fontWeight={700}>P (public)</text>
-        <text x={280} y={108} textAnchor="middle" fill="#EC4899" fontSize={11} fontFamily="Atkinson Hyperlegible" fontWeight={700}>Q (private)</text>
-      </svg>
 
-      {/* Explanatory paragraph */}
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.3 }}
-        style={{ flex: 1 }}>
-        <p style={{
-          fontFamily: 'Crimson Pro, serif', fontSize: 22, color: '#171717',
-          lineHeight: 1.45, marginBottom: 8, fontStyle: 'italic',
-        }}>
-          The <strong style={{ color: '#4F46E5' }}>public</strong> distribution P and
-          the <strong style={{ color: '#BE185D' }}>private</strong> distribution Q rarely match.
-        </p>
-        <p style={{
-          fontFamily: 'Atkinson Hyperlegible', fontSize: 18, color: '#374151', lineHeight: 1.5,
-        }}>
-          Their overlap — the <em>distribution gap</em> — determines how much of the public
-          pretraining transfers. Small gap ⇒ features almost work; large gap ⇒ DP-SGD must compensate.
-          <strong style={{ color: '#171717' }}> Does the gap size predict final DP accuracy?</strong>
-        </p>
-      </motion.div>
+      {/* Left: animated distributions */}
+      <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+        <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ overflow: 'visible' }}>
+          <defs>
+            <linearGradient id="overlapGrad" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stopColor="#6366F1" stopOpacity={0.25} />
+              <stop offset="100%" stopColor="#EC4899" stopOpacity={0.25} />
+            </linearGradient>
+          </defs>
+          {/* baseline */}
+          <line x1={0} y1={baseline} x2={W} y2={baseline} stroke="#E5E5E5" strokeWidth={1} />
+          {/* P fill */}
+          <path d={pPath + ` L ${W},${baseline} L 0,${baseline} Z`} fill="#6366F118" />
+          {/* Q fill */}
+          <path d={qPath + ` L ${W},${baseline} L 0,${baseline} Z`} fill="#EC489918" />
+          {/* P curve */}
+          <path d={pPath} fill="none" stroke="#6366F1" strokeWidth={2.5} />
+          {/* Q curve */}
+          <path d={qPath} fill="none" stroke="#EC4899" strokeWidth={2.5} />
+          {/* gap arrow */}
+          {shift > 20 && (
+            <>
+              <line
+                x1={pMu} x2={qMu} y1={baseline - amplitude * 0.55} y2={baseline - amplitude * 0.55}
+                stroke="#4B5563" strokeWidth={1.5} strokeDasharray="5,3"
+                markerStart="url(#arrowL)" markerEnd="url(#arrowR)"
+              />
+              <defs>
+                <marker id="arrowL" markerWidth={7} markerHeight={7} refX={4} refY={3.5} orient="auto">
+                  <polygon points="7,0 0,3.5 7,7" fill="#4B5563" />
+                </marker>
+                <marker id="arrowR" markerWidth={7} markerHeight={7} refX={3} refY={3.5} orient="auto">
+                  <polygon points="0,0 7,3.5 0,7" fill="#4B5563" />
+                </marker>
+              </defs>
+              <text x={(pMu + qMu) / 2} y={baseline - amplitude * 0.55 - 6}
+                textAnchor="middle" fontSize={13} fill="#4B5563"
+                fontFamily="Atkinson Hyperlegible" fontWeight={700}>
+                distribution gap
+              </text>
+            </>
+          )}
+          {/* labels */}
+          <text x={pMu} y={baseline + 16} textAnchor="middle" fill="#6366F1"
+            fontSize={14} fontFamily="Atkinson Hyperlegible" fontWeight={700}>P (public)</text>
+          <text x={qMu} y={baseline + 16} textAnchor="middle" fill="#EC4899"
+            fontSize={14} fontFamily="Atkinson Hyperlegible" fontWeight={700}>Q (private)</text>
+        </svg>
+
+        {/* ε slider */}
+        <div style={{ width: W, display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div className="flex items-center justify-between">
+            <span style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, fontWeight: 700, color: '#10B981' }}>
+              Strong privacy (small ε)
+            </span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 22, fontWeight: 700, color: labelColor }}>
+              ε = {eps.toFixed(1)} · <span style={{ color: labelColor }}>{label}</span>
+            </span>
+            <span style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, fontWeight: 700, color: '#EF4444' }}>
+              Weak privacy (large ε)
+            </span>
+          </div>
+          <input
+            type="range" min={0.5} max={8} step={0.1}
+            value={eps}
+            onChange={e => setEps(parseFloat(e.target.value))}
+            style={{
+              width: '100%', height: 8, borderRadius: 4,
+              background: `linear-gradient(to right, #10B981, #F59E0B, #EF4444)`,
+              accentColor: labelColor,
+            }}
+          />
+        </div>
+      </div>
     </motion.div>
   )
 }
