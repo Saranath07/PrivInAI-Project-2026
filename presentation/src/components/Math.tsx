@@ -1,4 +1,4 @@
-import { BlockMath, InlineMath } from 'react-katex'
+import katex from 'katex'
 
 interface Props {
   latex: string
@@ -7,11 +7,21 @@ interface Props {
 }
 
 export function Math({ latex, block = false, size = 1 }: Props) {
+  let html = ''
   try {
-    return block
-      ? <div style={{ fontSize: `${size}em` }}><BlockMath math={latex} /></div>
-      : <InlineMath math={latex} />
+    html = katex.renderToString(latex, {
+      displayMode: block,
+      throwOnError: false,
+      trust: true,
+    })
   } catch {
-    return <code className="text-red-500">{latex}</code>
+    return <code style={{ color: '#EF4444' }}>{latex}</code>
   }
+
+  return block
+    ? <div
+        style={{ fontSize: `${size}em` }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    : <span dangerouslySetInnerHTML={{ __html: html }} />
 }
