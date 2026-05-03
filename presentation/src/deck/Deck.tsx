@@ -7,6 +7,7 @@ import { Slide00 } from '../slides/00-title'
 import { Slide01 } from '../slides/01-question'
 import { Slide10 } from '../slides/10-image-setup'
 import { Slide11 } from '../slides/11-image-epsilon'
+import { Slide11b } from '../slides/11b-image-ranking'
 import { Slide12 } from '../slides/12-image-mechanism'
 import { Slide13 } from '../slides/13-image-divergences'
 import { Slide15 } from '../slides/15-image-probe'
@@ -21,7 +22,7 @@ import { Slide41 } from '../slides/41-thankyou'
 
 const SLIDE_COMPONENTS = [
   Slide00, Slide01,
-  Slide10, Slide11, Slide12, Slide13, Slide15,
+  Slide10, Slide11, Slide11b, Slide12, Slide13, Slide15,
   Slide20, Slide21, Slide22, Slide23, Slide24,
   Slide30,
   Slide40, Slide41,
