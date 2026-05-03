@@ -9,12 +9,12 @@ export function Slide23() {
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"
         style={{ fontSize: 36, fontWeight: 600, color: '#171717', marginBottom: 4 }}>
-        Order-4 Chains: Longer Context Softens — but Does Not Remove — the Cliff
+        Order-4 Chains
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
         style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 20, color: '#6B7280', marginBottom: 14 }}>
-        Same axes as order-3, with k = 4. Richer context means the pretrain distribution is sharper, so λ must go further before DP-SGD collapses.
+        Same axes as order-3.
       </motion.p>
 
       <div className="flex gap-6 flex-1 min-h-0">

@@ -10,7 +10,7 @@ export function Slide22() {
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"
         style={{ fontSize: 36, fontWeight: 600, color: '#171717', marginBottom: 4 }}>
-        Order-3 Chains: SGD Degrades Gracefully, DP-SGD Collapses
+        Order-3 Chains
       </motion.h2>
       <motion.p
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}

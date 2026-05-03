@@ -15,7 +15,7 @@ export function Slide21() {
       <motion.p
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
         style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 20, color: '#6B7280', marginBottom: 14 }}>
-        Confirms our knob is well-behaved: every α and every order k see divergence rise smoothly with λ — no jumps, no saturation.
+        The Renyi Divergence between P and Q is then calculated to quantify the shift due to induced noise through convex interpolation. This lambda is our controllable benchmark. Seen to be monotonically increasing, with greater values for lesser k.
       </motion.p>
 
       <div className="flex gap-6 flex-1 min-h-0">
