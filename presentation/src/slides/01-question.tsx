@@ -209,9 +209,9 @@ function gaussPath(mu: number, sigma: number, W: number, _H: number, baseline: n
 }
 
 function GapAnnotation() {
-  const [eps, setEps] = useState(0.5)
+  const [eps, setEps] = useState(5.0)
 
-  const W = 520, H = 130, baseline = H - 10, amplitude = H - 22
+  const W = 420, H = 130, baseline = H - 10, amplitude = H - 22
   const sigma = 0.55
   // P centred at 35% of width; Q shifts right as ε increases
   const pMu = W * 0.35
@@ -236,7 +236,7 @@ function GapAnnotation() {
       }}>
 
       {/* Left: animated distributions */}
-      <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
         <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ overflow: 'visible' }}>
           <defs>
             <linearGradient id="overlapGrad" x1="0" x2="1" y1="0" y2="0">
@@ -308,6 +308,28 @@ function GapAnnotation() {
             }}
           />
         </div>
+      </div>
+
+      {/* Right: explanatory text */}
+      <div style={{ width: 340, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 12, justifyContent: 'center' }}>
+        <p style={{
+          fontFamily: 'Crimson Pro, serif', fontSize: 22, color: '#171717',
+          lineHeight: 1.45, fontStyle: 'italic',
+        }}>
+          The <strong style={{ color: '#4F46E5' }}>public</strong> distribution P and
+          the <strong style={{ color: '#BE185D' }}>private</strong> distribution Q rarely match.
+        </p>
+        <p style={{
+          fontFamily: 'Atkinson Hyperlegible', fontSize: 18, color: '#374151', lineHeight: 1.5,
+        }}>
+          Their overlap — the <em>distribution gap</em> — determines how much of public
+          pretraining transfers. Small gap ⇒ features almost work; large gap ⇒ DP-SGD must compensate.
+        </p>
+        <p style={{
+          fontFamily: 'Atkinson Hyperlegible', fontSize: 19, color: '#171717', fontWeight: 700, lineHeight: 1.4,
+        }}>
+          Does the gap size predict final DP accuracy?
+        </p>
       </div>
     </motion.div>
   )
