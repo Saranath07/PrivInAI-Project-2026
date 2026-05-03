@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Crimson+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #FAFAF7;
+  --ink: #1F2937;
+  --ink-muted: #6B7280;
+  --accent-indigo: #6366F1;
+  --accent-pink: #EC4899;
+  --accent-emerald: #10B981;
+  --accent-amber: #F59E0B;
+  --slide-w: 1280px;
+  --slide-h: 720px;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: #111;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+}
+
+.font-serif-display {
+  font-family: 'Crimson Pro', serif;
+}
+
+.font-mono-data {
+  font-family: 'JetBrains Mono', monospace;
+}
