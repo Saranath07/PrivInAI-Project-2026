@@ -67,7 +67,7 @@ export function Slide35() {
   const bx = cx - bw / 2
 
   return (
-    <Slide track="transformers" trackIndex={6} trackTotal={6}>
+    <Slide track="transformers" trackIndex={6} trackTotal={7}>
       <motion.h2
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"

@@ -61,7 +61,7 @@ export function Slide33() {
   const bar = (v: number) => ((v - min) / (max - min || 1)) * 100
 
   return (
-    <Slide track="transformers" trackIndex={4} trackTotal={4}>
+    <Slide track="transformers" trackIndex={4} trackTotal={7}>
       <motion.h2
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"

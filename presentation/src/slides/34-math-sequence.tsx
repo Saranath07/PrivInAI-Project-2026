@@ -26,7 +26,7 @@ const dp: { sigma: string; eps: string }[] = [
 
 export function Slide34() {
   return (
-    <Slide track="transformers" trackIndex={5} trackTotal={5}>
+    <Slide track="transformers" trackIndex={5} trackTotal={7}>
       <motion.h2
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"
