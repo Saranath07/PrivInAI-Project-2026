@@ -30,7 +30,7 @@ const cards = [
 
 export function Slide30() {
   return (
-    <Slide track="transformers" trackIndex={1} trackTotal={4}>
+    <Slide track="transformers" trackIndex={1} trackTotal={5}>
       <motion.h2
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         className="font-serif-display"
