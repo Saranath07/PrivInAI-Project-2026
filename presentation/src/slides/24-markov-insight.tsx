@@ -19,20 +19,41 @@ export function Slide24() {
       </motion.p>
 
       <div className="flex gap-6 flex-1 min-h-0">
-        {/* Left: figure */}
+        {/* Left: formulas + figure */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
           style={{
-            flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: 10,
+            flex: 1, display: 'flex', flexDirection: 'column', gap: 10,
             minWidth: 0, minHeight: 0,
           }}>
-          <img
-            src={`${base}markov/order-3-correlated-noise.png`}
-            alt="Order-3 Markov results with correlated noise"
-            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-          />
+
+          <div style={{
+            background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10,
+            padding: '12px 18px', display: 'flex', gap: 28, alignItems: 'center', justifyContent: 'center',
+          }}>
+            <div>
+              <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 12, color: '#6B7280', fontWeight: 700, letterSpacing: 0.3, marginBottom: 2 }}>DP-SGD UPDATE</p>
+              <Latex latex="\theta_{t+1} = \theta_t - \tfrac{\eta}{B}\!\left(\sum_{i=1}^{B} \bar{g}_t(x_i) + \mathbf{n}_t\right)" block size={0.85} />
+            </div>
+            <div style={{ width: 1, alignSelf: 'stretch', background: '#E5E5E5' }} />
+            <div>
+              <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 12, color: '#6B7280', fontWeight: 700, letterSpacing: 0.3, marginBottom: 2 }}>CORRELATED NOISE</p>
+              <Latex latex="\mathbf{n}_t = \rho_t\, \mathbf{n}_{t-1} + \sqrt{1-\rho_t^2}\; \xi_t,\quad \xi_t \sim \mathcal{N}(0,\, \sigma^2 C^2 \mathbf{I})" block size={0.8} />
+            </div>
+          </div>
+
+          <div style={{
+            flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 10, padding: 10,
+            minHeight: 0,
+          }}>
+            <img
+              src={`${base}markov/order-3-correlated-noise.png`}
+              alt="Order-3 Markov results with correlated noise"
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+            />
+          </div>
         </motion.div>
 
         {/* Right: explanation */}
