@@ -23,7 +23,7 @@ import { Slide33 } from '../slides/33-transformer-analytics'
 import { Slide34 } from '../slides/34-math-sequence'
 import { Slide35 } from '../slides/35-math-architecture'
 import { Slide36 } from '../slides/36-math-results'
-import { Slide40 } from '../slides/40-takeaways'
+// import { Slide40 } from '../slides/40-takeaways'
 import { Slide42 } from '../slides/42-references'
 import { Slide41 } from '../slides/41-thankyou'
 
@@ -32,7 +32,7 @@ const SLIDE_COMPONENTS = [
   Slide10, Slide11, Slide11b, Slide12, Slide13, Slide15,
   Slide20, Slide21, Slide22, Slide23, Slide24,
   Slide30, Slide31, Slide32, Slide33, Slide34, Slide35, Slide36,
-  Slide40, Slide42, Slide41,
+   Slide42, Slide41,
 ]
 
 function getIndexFromHash(): number {
