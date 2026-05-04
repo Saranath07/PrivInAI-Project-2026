@@ -60,7 +60,7 @@ export function Slide13() {
               MAUVE SATURATES
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#78350F', lineHeight: 1.5 }}>
-              All 10 runs in <strong style={{ fontFamily: 'JetBrains Mono, monospace' }}>[0.996, 0.998]</strong> — no discriminative power.
+              All 10 runs in <strong style={{ fontFamily: 'JetBrains Mono, monospace' }}>[0.996, 0.998]</strong> - no discriminative power.
             </p>
           </div>
         </motion.div>

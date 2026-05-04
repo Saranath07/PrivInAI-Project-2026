@@ -19,7 +19,7 @@ export const METRIC_DEFINITIONS: Record<string, MetricDefinition> = {
   kl_estimated: {
     key: 'kl_estimated', name: 'Kullback-Leibler Divergence', short: 'KL div',
     formula: 'D_{KL}(P \\| Q) = \\sum_x P(x) \\log \\frac{P(x)}{Q(x)}',
-    definition: 'Expected log-ratio of probabilities under P. Asymmetric — penalizes Q missing mass that P has.',
+    definition: 'Expected log-ratio of probabilities under P. Asymmetric - penalizes Q missing mass that P has.',
     intuition: '"Bits wasted" when coding samples from P using a code optimized for Q.',
     range: '[0, ∞) · lower = more similar',
   },
@@ -47,7 +47,7 @@ export const METRIC_DEFINITIONS: Record<string, MetricDefinition> = {
   proxy_a: {
     key: 'proxy_a', name: 'Proxy-A Distance', short: 'Proxy-A',
     formula: '\\hat{d}_A = 2(1 - 2\\varepsilon),\\; \\varepsilon = \\text{error of domain classifier}',
-    definition: 'Train a classifier to distinguish P samples from Q samples. The lower its error, the more separable — and the higher the distance.',
+    definition: 'Train a classifier to distinguish P samples from Q samples. The lower its error, the more separable - and the higher the distance.',
     intuition: 'Domain adaptation classic. ε = 0.5 (can\'t tell apart) ⇒ Proxy-A = 0.',
     range: '[0, 2] · lower = more similar',
   },
@@ -69,7 +69,7 @@ export const METRIC_DEFINITIONS: Record<string, MetricDefinition> = {
     key: 'linear_probe', name: 'Linear Probe Accuracy', short: 'Linear Probe',
     formula: 'LP(P,Q) = \\max_{W,b} \\mathrm{acc}(W\\phi_P(x) + b,\\; y \\mid (x,y) \\sim Q)',
     definition: 'Freeze the pretrained encoder φ_P (trained on P). Train ONLY a linear head on labeled Q. The resulting accuracy measures how class-discriminative P\'s features are for Q.',
-    intuition: 'Directly tests "are these features useful for the downstream task?" — which is exactly what DP-SGD effectively does.',
+    intuition: 'Directly tests "are these features useful for the downstream task?" - which is exactly what DP-SGD effectively does.',
     range: '[0, 1] · higher = better transfer',
   },
 }

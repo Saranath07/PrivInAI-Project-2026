@@ -10,7 +10,7 @@ const items = [
   {
     num: '2',
     bold: 'Standard divergences fail to predict DP accuracy',
-    detail: 'FID, KL, JSD, MAUVE — all |ρ| < 0.5. Wasserstein has the wrong sign (ρ = −0.71).',
+    detail: 'FID, KL, JSD, MAUVE - all |ρ| < 0.5. Wasserstein has the wrong sign (ρ = −0.71).',
   },
   {
     num: '3',

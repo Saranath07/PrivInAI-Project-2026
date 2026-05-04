@@ -42,7 +42,7 @@ export function Slide00() {
 
         <motion.p {...fade(0.44)}
           style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 12, color: '#9CA3AF', position: 'absolute', bottom: 28 }}>
-          DA5001 — Privacy in AI · IIT Madras · May 2026
+          DA5001 - Privacy in AI · IIT Madras · May 2026
         </motion.p>
       </div>
     </Slide>

@@ -46,7 +46,7 @@ export function Slide14() {
             {[
               'MAUVE was designed for text (GPT-2 embeddings), not CNN features',
               'CNN feature clusters for SVHN vs MNIST heavily overlap in PCA space',
-              'All 10 experiments land in a 0.002-wide range — zero discriminative power',
+              'All 10 experiments land in a 0.002-wide range - zero discriminative power',
             ].map((text, i) => (
               <motion.div
                 key={i}

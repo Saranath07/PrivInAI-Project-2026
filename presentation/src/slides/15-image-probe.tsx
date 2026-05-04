@@ -39,7 +39,7 @@ export function Slide15() {
                   Freeze the encoder φ pretrained on <strong>P</strong> (public). Train <strong>only a linear head</strong> (W, b) on labeled <strong>Q</strong> (private). Report the test accuracy.
                 </p>
                 <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 20, color: '#4B5563', marginTop: 6, lineHeight: 1.5 }}>
-                  Directly measures: <em>"are these frozen features already useful for the downstream task?"</em> — which is exactly what DP-SGD is effectively forced to do.
+                  Directly measures: <em>"are these frozen features already useful for the downstream task?"</em> - which is exactly what DP-SGD is effectively forced to do.
                 </p>
               </div>
               <div style={{
@@ -76,7 +76,7 @@ export function Slide15() {
 
           <div className="flex flex-col gap-2">
             {[
-              'Best predictor — next best: MAUVE at 0.406',
+              'Best predictor - next best: MAUVE at 0.406',
               'No DP-SGD needed to compute it',
               'Stable across all ε values',
             ].map((text, i) => (

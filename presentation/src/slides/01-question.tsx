@@ -322,7 +322,7 @@ function GapAnnotation() {
         <p style={{
           fontFamily: 'Atkinson Hyperlegible', fontSize: 18, color: '#374151', lineHeight: 1.5,
         }}>
-          Their overlap — the <em>distribution gap</em> — determines how much of public
+          Their overlap - the <em>distribution gap</em> - determines how much of public
           pretraining transfers. Small gap ⇒ features almost work; large gap ⇒ DP-SGD must compensate.
         </p>
         <p style={{

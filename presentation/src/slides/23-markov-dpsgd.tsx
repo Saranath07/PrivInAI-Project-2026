@@ -48,7 +48,7 @@ export function Slide23() {
               ORDER 4 · k = 4
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5, marginBottom: 8 }}>
-              <strong style={{ color: '#2563EB' }}>SGD</strong> remains smooth and roughly parallel to order-3 — context helps, but does not change the shape.
+              <strong style={{ color: '#2563EB' }}>SGD</strong> remains smooth and roughly parallel to order-3 - context helps, but does not change the shape.
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5 }}>
               <strong style={{ color: '#EA580C' }}>DP-SGD</strong> cliff shifts to the right: more structure ⇒ more shift tolerated before collapse.
@@ -61,7 +61,7 @@ export function Slide23() {
             borderRadius: 8,
           }}>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#92400E', lineHeight: 1.5 }}>
-              <strong>Order-3 vs Order-4.</strong> Increasing k moves — but never erases — the divergence threshold.
+              <strong>Order-3 vs Order-4.</strong> Increasing k moves - but never erases - the divergence threshold.
             </p>
           </div>
 

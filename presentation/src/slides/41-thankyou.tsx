@@ -16,7 +16,7 @@ export function Slide41() {
         <motion.p
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}
           style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 18, color: '#6B7280' }}>
-          DP-ShiftBench — DA5001, Privacy in AI, IIT Madras
+          DP-ShiftBench - DA5001, Privacy in AI, IIT Madras
         </motion.p>
 
         <motion.p

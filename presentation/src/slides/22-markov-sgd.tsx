@@ -67,10 +67,10 @@ export function Slide22() {
               ORDER 3 · k = 3
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5, marginBottom: 8 }}>
-              <strong style={{ color: '#2563EB' }}>SGD (blue).</strong> Perplexity climbs smoothly with λ — the model absorbs moderate shift.
+              <strong style={{ color: '#2563EB' }}>SGD (blue).</strong> Perplexity climbs smoothly with λ - the model absorbs moderate shift.
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5 }}>
-              <strong style={{ color: '#EA580C' }}>DP-SGD (orange).</strong> Flat at small λ, then MAUVE crashes — pretraining stops helping once shift crosses a threshold.
+              <strong style={{ color: '#EA580C' }}>DP-SGD (orange).</strong> Flat at small λ, then MAUVE crashes - pretraining stops helping once shift crosses a threshold.
             </p>
           </div>
 

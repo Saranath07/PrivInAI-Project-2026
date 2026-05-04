@@ -77,7 +77,7 @@ export function Deck() {
         overflow: 'hidden',
       }}
     >
-      {/* Full-viewport canvas — slides stretch to fill the screen */}
+      {/* Full-viewport canvas - slides stretch to fill the screen */}
       <div
         style={{
           position: 'relative',

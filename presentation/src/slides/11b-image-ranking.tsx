@@ -76,13 +76,13 @@ export function Slide11b() {
           <div style={{ background: '#ECFDF5', padding: '14px 18px', border: '1px solid #A7F3D0', borderLeft: '4px solid #10B981', borderRadius: 10 }}>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#065F46', fontWeight: 700, letterSpacing: 0.3, marginBottom: 6 }}>BEST CASE · IMG-02</p>
             <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 28, color: '#10B981', fontWeight: 700, marginBottom: 4 }}>−1.33%</p>
-            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#065F46', lineHeight: 1.5 }}>Only 1.33% accuracy loss at ε=0.5 — <strong>5× less</strong> than the no-pretrain baseline.</p>
+            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#065F46', lineHeight: 1.5 }}>Only 1.33% accuracy loss at ε=0.5 - <strong>5× less</strong> than the no-pretrain baseline.</p>
           </div>
 
           <div style={{ background: '#FDF2F8', padding: '14px 18px', border: '1px solid #FBCFE8', borderLeft: '4px solid #EC4899', borderRadius: 10 }}>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#9F1239', fontWeight: 700, letterSpacing: 0.3, marginBottom: 6 }}>WORST CASE · IMG-04</p>
             <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 28, color: '#EC4899', fontWeight: 700, marginBottom: 4 }}>−11.05%</p>
-            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#9F1239', lineHeight: 1.5 }}>Autoencoder pretrain is <strong>worse than no pretrain</strong> — bad features amplify DP noise.</p>
+            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#9F1239', lineHeight: 1.5 }}>Autoencoder pretrain is <strong>worse than no pretrain</strong> - bad features amplify DP noise.</p>
           </div>
 
           <div style={{ background: '#EEF2FF', padding: '14px 18px', border: '1px solid #C7D2FE', borderLeft: '4px solid #6366F1', borderRadius: 10 }}>

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Slide } from '../deck/Slide'
+import { Math as Latex } from '../components/Math'
 
 export function Slide24() {
   const base = import.meta.env.BASE_URL
@@ -58,7 +59,17 @@ export function Slide24() {
             borderRadius: 8,
           }}>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#92400E', lineHeight: 1.6 }}>
-              This is mainly because if the noise makes the gradient go along an incorrect direction, deriving subsequent noise from this will result in the gradient following that incorrect path — potentially leading to worse utility than uncorrelated noise.
+              This is mainly because if the noise makes the gradient go along an incorrect direction, deriving subsequent noise from this will result in the gradient following that incorrect path - potentially leading to worse utility than uncorrelated noise.
+            </p>
+          </div>
+
+          <div style={{
+            background: '#F0FDF4', padding: '14px 18px',
+            border: '1px solid #BBF7D0', borderLeft: '4px solid #22C55E',
+            borderRadius: 8,
+          }}>
+            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 15, color: '#14532D', lineHeight: 1.6 }}>
+              The first graph depicts correlated noise induction with <Latex latex="\rho=0.9" />, while the second graph shows two curves: one with a constant <Latex latex="\rho=0.5" />, and the other with a decaying <Latex latex="\rho" /> from 0.5 to 0.
             </p>
           </div>
 

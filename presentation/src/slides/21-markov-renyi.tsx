@@ -81,7 +81,7 @@ export function Slide21() {
               <strong style={{ color: '#4F46E5' }}>Order-3 dominates.</strong> Shorter contexts have flatter P, so uniform noise perturbs them most.
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5 }}>
-              <strong style={{ color: '#4F46E5' }}>α inflates the scale</strong> but preserves rank — larger α weighs tail events more heavily.
+              <strong style={{ color: '#4F46E5' }}>α inflates the scale</strong> but preserves rank - larger α weighs tail events more heavily.
             </p>
           </div>
 

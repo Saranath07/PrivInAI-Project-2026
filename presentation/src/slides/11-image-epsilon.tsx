@@ -54,7 +54,7 @@ export function Slide11() {
             ))}
           </div>
 
-          {/* Slider — below legend, clearly separated */}
+          {/* Slider - below legend, clearly separated */}
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
             style={{
@@ -128,7 +128,7 @@ export function Slide11() {
               {avgDrop >= 0 ? '−' : '+'}{Math.abs(avgDrop).toFixed(3)}
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 20, color: '#7F1D1D', marginTop: 4, lineHeight: 1.4 }}>
-              At ε={EPS_LABELS[epsIdx]} — practically zero.
+              At ε={EPS_LABELS[epsIdx]} - practically zero.
             </p>
           </div>
         </motion.div>

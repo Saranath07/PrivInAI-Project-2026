@@ -149,7 +149,7 @@ export function Slide12() {
         }}>
         <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 22, color: '#92400E', lineHeight: 1.5 }}>
           <strong>Why does this slide matter?</strong> The previous slide showed accuracy is flat across ε.
-          That shouldn't happen — tighter privacy should hurt more. This slide explains <em>why</em> it doesn't:
+          That shouldn't happen - tighter privacy should hurt more. This slide explains <em>why</em> it doesn't:
           DP-SGD silently freezes the deep layers, so shrinking ε only perturbs a tiny, already-stable linear head.
         </p>
       </motion.div>
@@ -169,7 +169,7 @@ export function Slide12() {
           <div className="flex flex-col gap-3">
             {[
               { bold: 'Clipping', rest: ' caps each sample\'s influence to a ball of radius C.' },
-              { bold: 'Noise', rest: ' of scale σC is added — per-coordinate, regardless of depth.' },
+              { bold: 'Noise', rest: ' of scale σC is added - per-coordinate, regardless of depth.' },
               { bold: 'Signal-to-noise', rest: ' is worst in deep conv layers; best in the linear head.' },
             ].map((b, i) => (
               <motion.div

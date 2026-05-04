@@ -82,7 +82,7 @@ export function Slide30() {
           marginTop: 16, fontFamily: 'Atkinson Hyperlegible', fontStyle: 'italic',
           fontSize: 13, color: '#9CA3AF', textAlign: 'center',
         }}>
-        Next: finetune GPT-2 Medium with/without DP → perplexity vs privacy budget — results in final report
+        Next: finetune GPT-2 Medium with/without DP → perplexity vs privacy budget - results in final report
       </motion.p>
     </Slide>
   )

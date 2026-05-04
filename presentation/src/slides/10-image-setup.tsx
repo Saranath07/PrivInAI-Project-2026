@@ -29,68 +29,68 @@ const MODEL = 'SmallCNN (~620K params): 3×Conv+GroupNorm+ReLU+MaxPool → 2048-
 const experiments: Experiment[] = [
   {
     id: 'IMG-00', label: 'No Pretrain', tag: 'Baseline', tagColor: '#6B7280', tagBg: '#F3F4F6',
-    description: 'Random weights, trained from scratch with DP-SGD on MNIST. Sets the floor — shows how much pretraining helps at all.',
-    visual: 'baseline', result: 'Lowest accuracy (~92%) — confirms pretrain is essential', accent: '#6B7280',
-    pretrain: 'None (random init)', finetune: 'MNIST full — 60,000 images, 10 classes',
+    description: 'Random weights, trained from scratch with DP-SGD on MNIST. Sets the floor - shows how much pretraining helps at all.',
+    visual: 'baseline', result: 'Lowest accuracy (~92%) - confirms pretrain is essential', accent: '#6B7280',
+    pretrain: 'None (random init)', finetune: 'MNIST full - 60,000 images, 10 classes',
     model: MODEL, pretrainCfg: 'N/A', dpCfg: DP_CFG, accuracy: '92.33% ± 0.004',
   },
   {
     id: 'IMG-01', label: 'SVHN Full', tag: 'Domain Gap', tagColor: '#6366F1', tagBg: '#EEF2FF',
     description: 'Pretrain on all of SVHN (colour street-view digits), then privately finetune on MNIST (grey handwritten digits). Same 10 classes, very different image style.',
-    visual: 'full', result: 'Strong accuracy (~96%) — same label space bridges the gap', accent: '#6366F1',
-    pretrain: 'SVHN full — 73,257 images, 10 classes, 32×32 RGB', finetune: 'MNIST full — 60,000 images, 10 classes',
+    visual: 'full', result: 'Strong accuracy (~96%) - same label space bridges the gap', accent: '#6366F1',
+    pretrain: 'SVHN full - 73,257 images, 10 classes, 32×32 RGB', finetune: 'MNIST full - 60,000 images, 10 classes',
     model: MODEL, pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '95.97% ± 0.000',
   },
   {
     id: 'IMG-02', label: 'SVHN {0-4}', tag: 'Matched Classes', tagColor: '#10B981', tagBg: '#ECFDF5',
-    description: 'Pretrain only on SVHN digits 0-4; finetune on MNIST digits 0-4. Both data source AND label space are aligned — the purest test of domain gap.',
-    visual: 'matched', result: 'Best DP accuracy (~98.5%) — matched classes win', accent: '#10B981',
-    pretrain: 'SVHN {0–4} — ~37,000 images, 5 classes', finetune: 'MNIST {0–4} — 5 classes',
+    description: 'Pretrain only on SVHN digits 0-4; finetune on MNIST digits 0-4. Both data source AND label space are aligned - the purest test of domain gap.',
+    visual: 'matched', result: 'Best DP accuracy (~98.5%) - matched classes win', accent: '#10B981',
+    pretrain: 'SVHN {0–4} - ~37,000 images, 5 classes', finetune: 'MNIST {0–4} - 5 classes',
     model: 'SmallCNN (~619K params, 5-class head)', pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '98.46% ± 0.001',
   },
   {
     id: 'IMG-03', label: 'SVHN {5-9}', tag: 'Label Shift', tagColor: '#F59E0B', tagBg: '#FFFBEB',
-    description: 'Pretrain on digits 5-9, finetune on digits 0-4. The label spaces are disjoint — tests whether feature transfer survives label mismatch.',
-    visual: 'mismatched', result: 'Still ~96.8% — feature quality beats label alignment', accent: '#F59E0B',
-    pretrain: 'SVHN {5–9} — ~36,000 images, 5 classes', finetune: 'MNIST {0–4} — 5 classes (head re-initialised)',
+    description: 'Pretrain on digits 5-9, finetune on digits 0-4. The label spaces are disjoint - tests whether feature transfer survives label mismatch.',
+    visual: 'mismatched', result: 'Still ~96.8% - feature quality beats label alignment', accent: '#F59E0B',
+    pretrain: 'SVHN {5–9} - ~36,000 images, 5 classes', finetune: 'MNIST {0–4} - 5 classes (head re-initialised)',
     model: 'SmallCNN (~619K params, 5-class head)', pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '96.84% ± 0.000',
   },
   {
     id: 'IMG-04', label: 'SVHN Autoencoder', tag: 'Unsupervised', tagColor: '#EC4899', tagBg: '#FDF2F8',
     description: 'Pretrain a convolutional autoencoder (no labels) on SVHN. Encoder weights transferred to SmallCNN, decoder discarded. Tests whether reconstruction-based features transfer under DP.',
-    visual: 'ae', result: 'Worst (~87.7%) — unsupervised features lack class discrimination', accent: '#EC4899',
-    pretrain: 'SVHN full — ConvAutoencoder (encoder 93K + decoder 165K params), MSELoss, Adam lr=0.001, 30 epochs',
-    finetune: 'MNIST full — encoder weights transferred, head re-initialised',
+    visual: 'ae', result: 'Worst (~87.7%) - unsupervised features lack class discrimination', accent: '#EC4899',
+    pretrain: 'SVHN full - ConvAutoencoder (encoder 93K + decoder 165K params), MSELoss, Adam lr=0.001, 30 epochs',
+    finetune: 'MNIST full - encoder weights transferred, head re-initialised',
     model: 'SmallCNN (620K) with encoder init from autoencoder', pretrainCfg: 'Adam lr=0.001 · 30 epochs · MSELoss (pixel reconstruction)', dpCfg: DP_CFG, accuracy: '87.71% ± 0.006',
   },
   {
     id: 'IMG-05-07', label: 'SVHN 10/25/50%', tag: 'Data Scarcity', tagColor: '#8B5CF6', tagBg: '#F5F3FF',
     description: 'Random subsets of SVHN: 10% (~7,300 imgs), 25% (~18,000 imgs), 50% (~37,000 imgs). Same DP finetune setup as IMG-01. Tests diminishing returns of pretrain data volume.',
-    visual: 'scarcity', result: '95.3–95.6% — saturates above 10%; only 0.18% gap from 10% to 50%', accent: '#8B5CF6',
+    visual: 'scarcity', result: '95.3–95.6% - saturates above 10%; only 0.18% gap from 10% to 50%', accent: '#8B5CF6',
     pretrain: '10% → ~7,300 · 25% → ~18,000 · 50% → ~37,000 images of SVHN', finetune: 'MNIST full',
     model: MODEL, pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG,
     accuracy: 'IMG-05: 95.34% · IMG-06: 95.29% · IMG-07: 95.52%',
   },
   {
     id: 'IMG-08', label: 'CIFAR-10', tag: 'Large Gap', tagColor: '#EF4444', tagBg: '#FEF2F2',
-    description: 'Pretrain on CIFAR-10 natural photos (animals, vehicles — no digits). Tests cross-domain transfer from semantically unrelated images. Head re-initialised for MNIST classes.',
-    visual: 'domain', result: 'Lower (~94.2%) — bigger domain gap hurts but doesn\'t break it', accent: '#EF4444',
-    pretrain: 'CIFAR-10 — 50,000 images, 10 object classes, 32×32 RGB', finetune: 'MNIST full — head re-initialised',
+    description: 'Pretrain on CIFAR-10 natural photos (animals, vehicles - no digits). Tests cross-domain transfer from semantically unrelated images. Head re-initialised for MNIST classes.',
+    visual: 'domain', result: 'Lower (~94.2%) - bigger domain gap hurts but doesn\'t break it', accent: '#EF4444',
+    pretrain: 'CIFAR-10 - 50,000 images, 10 object classes, 32×32 RGB', finetune: 'MNIST full - head re-initialised',
     model: MODEL, pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '94.19% ± 0.000',
   },
   {
     id: 'IMG-09', label: 'SVHN+Aug', tag: 'Style Shift', tagColor: '#14B8A6', tagBg: '#F0FDFA',
     description: 'Pretrain on SVHN full with data augmentation: RandomCrop (4px pad), RandomHorizontalFlip, ColorJitter (brightness/contrast/saturation=0.2). Tests if style-invariant features transfer better.',
-    visual: 'aug', result: '~95.8% — augmentation does not help as much as label matching', accent: '#14B8A6',
+    visual: 'aug', result: '~95.8% - augmentation does not help as much as label matching', accent: '#14B8A6',
     pretrain: 'SVHN full + RandomCrop, HFlip, ColorJitter(0.2)', finetune: 'MNIST full',
     model: MODEL, pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '95.85% ± 0.001',
   },
   {
     id: 'IMG-10', label: 'FashionMNIST', tag: 'Format Match', tagColor: '#F97316', tagBg: '#FFF7ED',
     description: 'Pretrain on FashionMNIST (28×28 greyscale clothing images). Same pixel format as MNIST but completely different semantics. Head re-initialised for digit classes.',
-    visual: 'format', result: '~93.5% — same pixel format but wrong semantics = weak features', accent: '#F97316',
-    pretrain: 'FashionMNIST — 60,000 images, 10 clothing classes, 28×28 greyscale → Resize(32) + Grayscale(3ch)',
-    finetune: 'MNIST full — head re-initialised',
+    visual: 'format', result: '~93.5% - same pixel format but wrong semantics = weak features', accent: '#F97316',
+    pretrain: 'FashionMNIST - 60,000 images, 10 clothing classes, 28×28 greyscale → Resize(32) + Grayscale(3ch)',
+    finetune: 'MNIST full - head re-initialised',
     model: MODEL, pretrainCfg: PRETRAIN_CFG, dpCfg: DP_CFG, accuracy: '93.55% ± 0.000',
   },
 ]
@@ -105,7 +105,7 @@ function ExperimentVisual({ visual, accent }: { visual: Experiment['visual']; ac
   if (visual === 'baseline') return (
     <svg width={180} height={110} viewBox="0 0 180 110">
       <text x={90} y={50} textAnchor="middle" fontSize={42} dominantBaseline="middle">🎲</text>
-      <text x={90} y={92} textAnchor="middle" fontSize={12} fill="#9CA3AF" fontFamily="Atkinson Hyperlegible">Random init — no pretrain</text>
+      <text x={90} y={92} textAnchor="middle" fontSize={12} fill="#9CA3AF" fontFamily="Atkinson Hyperlegible">Random init - no pretrain</text>
     </svg>
   )
 
