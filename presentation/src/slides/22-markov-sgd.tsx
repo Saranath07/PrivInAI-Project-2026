@@ -36,7 +36,10 @@ export function Slide22() {
             <div style={{ width: 1, alignSelf: 'stretch', background: '#E5E5E5' }} />
             <div>
               <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 12, color: '#6B7280', fontWeight: 700, letterSpacing: 0.3, marginBottom: 2 }}>MAUVE</p>
-              <TeX latex="\mathrm{MAUVE}(P,Q) = \exp(-c\cdot \text{Area}(\mathrm{KL}(P\|M),\mathrm{KL}(Q\|M)))" block size={0.8} />
+              <TeX latex="\mathrm{MAUVE}(P,Q) = \mathrm{AUC}\Big\{\big(e^{-c\,\mathrm{KL}(Q\,\|\,R_\lambda)},\; e^{-c\,\mathrm{KL}(P\,\|\,R_\lambda)}\big) : \lambda \in (0,1)\Big\}" block size={0.7} />
+              <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>
+                where <TeX latex="R_\lambda = \lambda P + (1-\lambda) Q" />
+              </p>
             </div>
           </div>
 

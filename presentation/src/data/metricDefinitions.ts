@@ -60,7 +60,7 @@ export const METRIC_DEFINITIONS: Record<string, MetricDefinition> = {
   },
   mauve: {
     key: 'mauve', name: 'MAUVE', short: 'MAUVE',
-    formula: 'MAUVE(P,Q) = \\text{AUC of divergence curve} (P, Q) \\text{ under KL via mixtures}',
+    formula: '\\begin{aligned}\\mathrm{MAUVE}(P,Q) &= \\mathrm{AUC}\\Big\\{\\big(e^{-c\\,\\mathrm{KL}(Q\\|R_\\lambda)},\\; e^{-c\\,\\mathrm{KL}(P\\|R_\\lambda)}\\big) : \\lambda \\in (0,1)\\Big\\} \\\\ R_\\lambda &= \\lambda P + (1-\\lambda) Q\\end{aligned}',
     definition: 'Computes KL divergences along a family of mixtures between P and Q, then integrates. Designed to capture both quality and coverage of generative text/image models.',
     intuition: 'Bounded in [0, 1]. 1 = identical distributions.',
     range: '[0, 1] · higher = more similar',

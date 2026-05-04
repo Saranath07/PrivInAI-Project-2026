@@ -193,10 +193,10 @@ export function Slide35() {
             {/* Output */}
             <motion.g
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}>
-              <rect x={bx + 100} y={478} width={bw - 200} height={38} rx={19}
+              <rect x={bx + 40} y={478} width={bw - 80} height={38} rx={19}
                 fill="#FFFFFF" stroke={AMBER} strokeWidth={1.5} />
               <text x={cx} y={502} textAnchor="middle"
-                fontFamily="JetBrains Mono, monospace" fontSize={13} fontWeight={700}
+                fontFamily="JetBrains Mono, monospace" fontSize={12} fontWeight={700}
                 fill={AMBER}>
                 predicted digit / $ / ␣
               </text>
