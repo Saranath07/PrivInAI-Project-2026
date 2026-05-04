@@ -21,8 +21,12 @@ export const SLIDES: SlideEntry[] = [
   { id: '22-markov-sgd',        track: 'markov',      trackIndex: 3, trackTotal: 5 },
   { id: '23-markov-dpsgd',      track: 'markov',      trackIndex: 4, trackTotal: 5 },
   { id: '24-markov-insight',    track: 'markov',      trackIndex: 5, trackTotal: 5 },
-  { id: '30-transformers',      track: 'transformers' },
+  { id: '30-transformers',          track: 'transformers', trackIndex: 1, trackTotal: 4 },
+  { id: '31-transformer-shift',     track: 'transformers', trackIndex: 2, trackTotal: 4 },
+  { id: '32-transformer-ppl',       track: 'transformers', trackIndex: 3, trackTotal: 4 },
+  { id: '33-transformer-analytics', track: 'transformers', trackIndex: 4, trackTotal: 4 },
   { id: '40-takeaways',         track: 'close' },
+  { id: '42-references',        track: 'close' },
   { id: '41-thankyou',          track: 'close' },
 ]
 

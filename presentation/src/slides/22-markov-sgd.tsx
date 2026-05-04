@@ -67,20 +67,10 @@ export function Slide22() {
               ORDER 3 · k = 3
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5, marginBottom: 8 }}>
-              <strong style={{ color: '#2563EB' }}>SGD (blue).</strong> Perplexity climbs smoothly with λ - the model absorbs moderate shift.
+              <strong style={{ color: '#4F46E5' }}>Perplexity.</strong> Increases for both SGD and DP-SGD with DP-SGD sitting above SGD due to added noise during training.
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5 }}>
-              <strong style={{ color: '#EA580C' }}>DP-SGD (orange).</strong> Flat at small λ, then MAUVE crashes - pretraining stops helping once shift crosses a threshold.
-            </p>
-          </div>
-
-          <div style={{
-            background: '#F0FDF4', padding: '12px 18px',
-            border: '1px solid #A7F3D0', borderLeft: '4px solid #10B981',
-            borderRadius: 8,
-          }}>
-            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#065F46', lineHeight: 1.5 }}>
-              Gap between curves = <strong>privacy cost under distribution shift</strong>.
+              <strong style={{ color: '#4F46E5' }}>MAUVE.</strong> DP-SGD below SGD as generated test from P and Q are closer in SGD's case. Erratic behaviour observed due to the small size of dataset.
             </p>
           </div>
         </motion.div>

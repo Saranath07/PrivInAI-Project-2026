@@ -17,15 +17,19 @@ import { Slide22 } from '../slides/22-markov-sgd'
 import { Slide23 } from '../slides/23-markov-dpsgd'
 import { Slide24 } from '../slides/24-markov-insight'
 import { Slide30 } from '../slides/30-transformers'
+import { Slide31 } from '../slides/31-transformer-shift'
+import { Slide32 } from '../slides/32-transformer-ppl'
+import { Slide33 } from '../slides/33-transformer-analytics'
 import { Slide40 } from '../slides/40-takeaways'
+import { Slide42 } from '../slides/42-references'
 import { Slide41 } from '../slides/41-thankyou'
 
 const SLIDE_COMPONENTS = [
   Slide00, Slide01,
   Slide10, Slide11, Slide11b, Slide12, Slide13, Slide15,
   Slide20, Slide21, Slide22, Slide23, Slide24,
-  Slide30,
-  Slide40, Slide41,
+  Slide30, Slide31, Slide32, Slide33,
+  Slide40, Slide42, Slide41,
 ]
 
 function getIndexFromHash(): number {

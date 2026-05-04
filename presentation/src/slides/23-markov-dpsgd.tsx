@@ -48,30 +48,10 @@ export function Slide23() {
               ORDER 4 · k = 4
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5, marginBottom: 8 }}>
-              <strong style={{ color: '#2563EB' }}>SGD</strong> remains smooth and roughly parallel to order-3 - context helps, but does not change the shape.
+              <strong style={{ color: '#4F46E5' }}>Perplexity.</strong> Lower than what we see for order 3 and follows the same trend, due to richer context.
             </p>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 17, color: '#171717', lineHeight: 1.5 }}>
-              <strong style={{ color: '#EA580C' }}>DP-SGD</strong> cliff shifts to the right: more structure ⇒ more shift tolerated before collapse.
-            </p>
-          </div>
-
-          <div style={{
-            background: '#FEF3C7', padding: '12px 18px',
-            border: '1px solid #FCD34D', borderLeft: '4px solid #F59E0B',
-            borderRadius: 8,
-          }}>
-            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#92400E', lineHeight: 1.5 }}>
-              <strong>Order-3 vs Order-4.</strong> Increasing k moves - but never erases - the divergence threshold.
-            </p>
-          </div>
-
-          <div style={{
-            background: '#F0FDF4', padding: '12px 18px',
-            border: '1px solid #A7F3D0', borderLeft: '4px solid #10B981',
-            borderRadius: 8,
-          }}>
-            <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#065F46', lineHeight: 1.5 }}>
-              The cliff is <strong>structural</strong>, not an artefact of a particular chain order.
+              <strong style={{ color: '#4F46E5' }}>MAUVE.</strong> Same erratic behaviour observed but on a slightly smaller scale, with average MAUVE scores being higher than that of order 3.
             </p>
           </div>
         </motion.div>
