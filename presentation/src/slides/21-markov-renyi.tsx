@@ -91,7 +91,7 @@ export function Slide21() {
             borderRadius: 8,
           }}>
             <p style={{ fontFamily: 'Atkinson Hyperlegible', fontSize: 16, color: '#065F46', lineHeight: 1.5 }}>
-              ⇒ λ is a <strong>calibrated</strong> shift knob. Now test what happens when we train under it.
+              ⇒ λ is a <strong>calibrated</strong> shift knob.
             </p>
           </div>
         </motion.div>
